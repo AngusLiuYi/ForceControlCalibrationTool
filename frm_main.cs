@@ -5,13 +5,14 @@ using System.Windows.Forms;
 
 namespace A20231109
 {
-    public partial class Form1 : Form
+    public partial class frm_main : Form
     {
-        public Form1()
+        public frm_main()
         {
             InitializeComponent();
         }
 
+        #region 算法实现
         /// <summary>
         /// 拟合算法1
         /// 无锡客户在用算法
@@ -88,7 +89,9 @@ namespace A20231109
             }
             return;
         }
+        #endregion
 
+        #region 数据表格增删改查
         /// <summary>
         /// 添加数据组
         /// </summary>
@@ -153,6 +156,8 @@ namespace A20231109
             }
             return;
         }
+
+        #endregion
 
         /// <summary>
         /// 调用拟合算法，生成k、b值

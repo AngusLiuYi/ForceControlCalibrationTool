@@ -1,6 +1,6 @@
 ﻿namespace A20231109
 {
-    partial class Form1
+    partial class frm_main
     {
         /// <summary>
         /// 必需的设计器变量。
