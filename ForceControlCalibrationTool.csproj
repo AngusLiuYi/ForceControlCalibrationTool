@@ -6,12 +6,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8E254B81-9077-4AE2-8AF9-A2EA4D18F352}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>S20231109</RootNamespace>
-    <AssemblyName>S20231109</AssemblyName>
+    <RootNamespace>ForceControlCalibrationTool</RootNamespace>
+    <AssemblyName>ForceControlCalibrationTool</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -46,6 +46,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -83,88 +87,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="bin\Debug\S20231109.exe.config" />
     <None Include="bin\Debug\使用手册.docx" />
     <None Include="bin\Debug\使用手册.pdf" />
     <None Include="bin\Debug\大寰力控标定使用手册_v1.1.pdf" />
     <None Include="bin\大寰力控标定工具_v1.1.rar" />
-    <None Include="packages\BouncyCastle.Cryptography.2.2.1\.signature.p7s" />
-    <None Include="packages\BouncyCastle.Cryptography.2.2.1\BouncyCastle.Cryptography.2.2.1.nupkg" />
-    <None Include="packages\BouncyCastle.Cryptography.2.2.1\LICENSE.md" />
-    <None Include="packages\BouncyCastle.Cryptography.2.2.1\README.md" />
-    <None Include="packages\Enums.NET.4.0.1\.signature.p7s" />
-    <None Include="packages\Enums.NET.4.0.1\Enums.NET.4.0.1.nupkg" />
-    <None Include="packages\MathNet.Numerics.Signed.4.15.0\.signature.p7s" />
-    <None Include="packages\MathNet.Numerics.Signed.4.15.0\MathNet.Numerics.Signed.4.15.0.nupkg" />
-    <None Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\.signature.p7s" />
-    <None Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\Microsoft.IO.RecyclableMemoryStream.2.3.2.nupkg" />
-    <None Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\README.md" />
-    <None Include="packages\NPOI.2.6.2\.signature.p7s" />
-    <None Include="packages\NPOI.2.6.2\LICENSE" />
-    <None Include="packages\NPOI.2.6.2\NPOI.2.6.2.nupkg" />
-    <None Include="packages\SharpZipLib.1.3.3\.signature.p7s" />
-    <None Include="packages\SharpZipLib.1.3.3\SharpZipLib.1.3.3.nupkg" />
-    <None Include="packages\SixLabors.Fonts.1.0.0\.signature.p7s" />
-    <None Include="packages\SixLabors.Fonts.1.0.0\SixLabors.Fonts.1.0.0.nupkg" />
-    <None Include="packages\SixLabors.ImageSharp.2.1.4\.signature.p7s" />
-    <None Include="packages\SixLabors.ImageSharp.2.1.4\SixLabors.ImageSharp.2.1.4.nupkg" />
-    <None Include="packages\System.Buffers.4.5.1\.signature.p7s" />
-    <None Include="packages\System.Buffers.4.5.1\lib\netcoreapp2.0\_._" />
-    <None Include="packages\System.Buffers.4.5.1\lib\uap10.0.16299\_._" />
-    <None Include="packages\System.Buffers.4.5.1\ref\netcoreapp2.0\_._" />
-    <None Include="packages\System.Buffers.4.5.1\ref\uap10.0.16299\_._" />
-    <None Include="packages\System.Buffers.4.5.1\System.Buffers.4.5.1.nupkg" />
-    <None Include="packages\System.Memory.4.5.5\.signature.p7s" />
-    <None Include="packages\System.Memory.4.5.5\lib\netcoreapp2.1\_._" />
-    <None Include="packages\System.Memory.4.5.5\ref\netcoreapp2.1\_._" />
-    <None Include="packages\System.Memory.4.5.5\System.Memory.4.5.5.nupkg" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\.signature.p7s" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\MonoAndroid10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\MonoTouch10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\netcoreapp2.0\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\uap10.0.16299\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\xamarinios10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\xamarinmac20\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\xamarintvos10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\lib\xamarinwatchos10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\MonoAndroid10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\MonoTouch10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\netcoreapp2.0\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\uap10.0.16299\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\xamarinios10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\xamarinmac20\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\xamarintvos10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\ref\xamarinwatchos10\_._" />
-    <None Include="packages\System.Numerics.Vectors.4.5.0\System.Numerics.Vectors.4.5.0.nupkg" />
-    <None Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\.signature.p7s" />
-    <None Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\System.Runtime.CompilerServices.Unsafe.5.0.0.nupkg" />
-    <None Include="packages\System.Security.AccessControl.6.0.0\.signature.p7s" />
-    <None Include="packages\System.Security.AccessControl.6.0.0\buildTransitive\netcoreapp2.0\System.Security.AccessControl.targets" />
-    <None Include="packages\System.Security.AccessControl.6.0.0\buildTransitive\netcoreapp3.1\_._" />
-    <None Include="packages\System.Security.AccessControl.6.0.0\System.Security.AccessControl.6.0.0.nupkg" />
-    <None Include="packages\System.Security.Cryptography.Xml.6.0.1\.signature.p7s" />
-    <None Include="packages\System.Security.Cryptography.Xml.6.0.1\buildTransitive\netcoreapp2.0\System.Security.Cryptography.Xml.targets" />
-    <None Include="packages\System.Security.Cryptography.Xml.6.0.1\buildTransitive\netcoreapp3.1\_._" />
-    <None Include="packages\System.Security.Cryptography.Xml.6.0.1\System.Security.Cryptography.Xml.6.0.1.nupkg" />
-    <None Include="packages\System.Security.Principal.Windows.5.0.0\.signature.p7s" />
-    <None Include="packages\System.Security.Principal.Windows.5.0.0\lib\uap10.0.16299\_._" />
-    <None Include="packages\System.Security.Principal.Windows.5.0.0\ref\uap10.0.16299\_._" />
-    <None Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\uap10.0.16299\_._" />
-    <None Include="packages\System.Security.Principal.Windows.5.0.0\System.Security.Principal.Windows.5.0.0.nupkg" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\.signature.p7s" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\MonoAndroid10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\MonoTouch10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\xamarinios10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\xamarinmac20\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\xamarintvos10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\xamarinwatchos10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\MonoAndroid10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\MonoTouch10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\xamarinios10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\xamarinmac20\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\xamarintvos10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\ref\xamarinwatchos10\_._" />
-    <None Include="packages\System.Text.Encoding.CodePages.5.0.0\System.Text.Encoding.CodePages.5.0.0.nupkg" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -174,6 +100,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.MD" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -191,291 +118,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\S20231109.exe" />
-    <Content Include="bin\Debug\S20231109.pdb" />
     <Content Include="logo_DH.ico" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.xml" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\net6.0\BouncyCastle.Cryptography.dll" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\net6.0\BouncyCastle.Cryptography.xml" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\netstandard2.0\BouncyCastle.Cryptography.dll" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\lib\netstandard2.0\BouncyCastle.Cryptography.xml" />
-    <Content Include="packages\BouncyCastle.Cryptography.2.2.1\packageIcon.png" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\net45\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\net45\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\net45\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netcoreapp3.0\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netcoreapp3.0\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netcoreapp3.0\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.0\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.0\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.0\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.1\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.1\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.1\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.3\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.3\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard1.3\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.0\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.0\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.0\Enums.NET.xml" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.1\Enums.NET.dll" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.1\Enums.NET.pdb" />
-    <Content Include="packages\Enums.NET.4.0.1\lib\netstandard2.1\Enums.NET.xml" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\icon.png" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\net40\MathNet.Numerics.dll" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\net40\MathNet.Numerics.xml" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\net461\MathNet.Numerics.dll" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\net461\MathNet.Numerics.xml" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\netstandard1.3\MathNet.Numerics.dll" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\netstandard1.3\MathNet.Numerics.xml" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\netstandard2.0\MathNet.Numerics.dll" />
-    <Content Include="packages\MathNet.Numerics.Signed.4.15.0\lib\netstandard2.0\MathNet.Numerics.xml" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\net462\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\net462\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\net5.0\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\net5.0\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netcoreapp2.1\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netcoreapp2.1\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netstandard2.1\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\netstandard2.1\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.Core.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.Core.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.Core.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OOXML.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OOXML.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OOXML.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXml4Net.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXml4Net.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXml4Net.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXmlFormats.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXmlFormats.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net472\NPOI.OpenXmlFormats.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.Core.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.Core.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.Core.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OOXML.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OOXML.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OOXML.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXml4Net.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXml4Net.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXml4Net.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXmlFormats.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXmlFormats.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\net6.0\NPOI.OpenXmlFormats.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.Core.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.Core.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.Core.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OOXML.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OOXML.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OOXML.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXml4Net.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXml4Net.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXml4Net.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXmlFormats.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXmlFormats.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.0\NPOI.OpenXmlFormats.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.Core.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.Core.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.Core.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OOXML.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OOXML.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OOXML.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXml4Net.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXml4Net.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXml4Net.xml" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXmlFormats.dll" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXmlFormats.pdb" />
-    <Content Include="packages\NPOI.2.6.2\lib\netstandard2.1\NPOI.OpenXmlFormats.xml" />
-    <Content Include="packages\NPOI.2.6.2\logo\120_120.jpg" />
-    <Content Include="packages\NPOI.2.6.2\logo\240_240.png" />
-    <Content Include="packages\NPOI.2.6.2\logo\32_32.jpg" />
-    <Content Include="packages\NPOI.2.6.2\logo\60_60.jpg" />
-    <Content Include="packages\NPOI.2.6.2\Read Me.txt" />
-    <Content Include="packages\SharpZipLib.1.3.3\images\sharpziplib-nuget-256x256.png" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.pdb" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.xml" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.0\ICSharpCode.SharpZipLib.pdb" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.0\ICSharpCode.SharpZipLib.xml" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.1\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.1\ICSharpCode.SharpZipLib.pdb" />
-    <Content Include="packages\SharpZipLib.1.3.3\lib\netstandard2.1\ICSharpCode.SharpZipLib.xml" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netcoreapp3.1\SixLabors.Fonts.dll" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netcoreapp3.1\SixLabors.Fonts.xml" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.xml" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netstandard2.1\SixLabors.Fonts.dll" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\lib\netstandard2.1\SixLabors.Fonts.xml" />
-    <Content Include="packages\SixLabors.Fonts.1.0.0\sixlabors.fonts.128.png" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\net472\SixLabors.ImageSharp.dll" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\net472\SixLabors.ImageSharp.xml" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netcoreapp2.1\SixLabors.ImageSharp.dll" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netcoreapp2.1\SixLabors.ImageSharp.xml" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netcoreapp3.1\SixLabors.ImageSharp.dll" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netcoreapp3.1\SixLabors.ImageSharp.xml" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netstandard2.0\SixLabors.ImageSharp.dll" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netstandard2.0\SixLabors.ImageSharp.xml" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netstandard2.1\SixLabors.ImageSharp.dll" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\lib\netstandard2.1\SixLabors.ImageSharp.xml" />
-    <Content Include="packages\SixLabors.ImageSharp.2.1.4\sixlabors.imagesharp.128.png" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\net461\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\LICENSE.TXT" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\net45\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\net45\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\netstandard1.1\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\netstandard1.1\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\netstandard2.0\System.Buffers.dll" />
-    <Content Include="packages\System.Buffers.4.5.1\ref\netstandard2.0\System.Buffers.xml" />
-    <Content Include="packages\System.Buffers.4.5.1\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Buffers.4.5.1\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Buffers.4.5.1\version.txt" />
-    <Content Include="packages\System.Memory.4.5.5\lib\net461\System.Memory.dll" />
-    <Content Include="packages\System.Memory.4.5.5\lib\net461\System.Memory.xml" />
-    <Content Include="packages\System.Memory.4.5.5\lib\netstandard1.1\System.Memory.dll" />
-    <Content Include="packages\System.Memory.4.5.5\lib\netstandard1.1\System.Memory.xml" />
-    <Content Include="packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.dll" />
-    <Content Include="packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.xml" />
-    <Content Include="packages\System.Memory.4.5.5\LICENSE.TXT" />
-    <Content Include="packages\System.Memory.4.5.5\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Memory.4.5.5\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Memory.4.5.5\version.txt" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\netstandard1.0\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\netstandard1.0\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\netstandard2.0\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\netstandard2.0\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\LICENSE.TXT" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\net45\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\net45\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\net46\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\net46\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\netstandard1.0\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\netstandard1.0\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\netstandard2.0\System.Numerics.Vectors.dll" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\ref\netstandard2.0\System.Numerics.Vectors.xml" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Numerics.Vectors.4.5.0\version.txt" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\Icon.png" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netcoreapp2.0\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netcoreapp2.0\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\LICENSE.TXT" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\net461\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\net461\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard1.0\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard2.0\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard2.1\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\ref\netstandard2.1\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Runtime.CompilerServices.Unsafe.5.0.0\version.txt" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\Icon.png" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\net6.0\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\net6.0\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\netstandard2.0\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\lib\netstandard2.0\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\LICENSE.TXT" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\net461\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\net461\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\net6.0\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\net6.0\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\netstandard2.0\System.Security.AccessControl.dll" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\runtimes\win\lib\netstandard2.0\System.Security.AccessControl.xml" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Security.AccessControl.6.0.0\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\Icon.png" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\net461\System.Security.Cryptography.Xml.dll" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\net461\System.Security.Cryptography.Xml.xml" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\net6.0\System.Security.Cryptography.Xml.dll" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\net6.0\System.Security.Cryptography.Xml.xml" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\netstandard2.0\System.Security.Cryptography.Xml.dll" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\lib\netstandard2.0\System.Security.Cryptography.Xml.xml" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\LICENSE.TXT" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\runtimes\win\lib\net461\System.Security.Cryptography.Xml.dll" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\runtimes\win\lib\net461\System.Security.Cryptography.Xml.xml" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Security.Cryptography.Xml.6.0.1\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\Icon.png" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\net46\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\netstandard1.3\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\netstandard2.0\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\lib\netstandard2.0\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\LICENSE.TXT" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\net461\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\net461\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\net46\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netcoreapp3.0\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netcoreapp3.0\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\de\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\es\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\fr\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\it\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\ja\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\ko\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\ru\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\zh-hans\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard1.3\zh-hant\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard2.0\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\ref\netstandard2.0\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\unix\lib\netcoreapp2.0\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\unix\lib\netcoreapp2.0\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\net461\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\net461\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\net46\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\netcoreapp2.0\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\netcoreapp2.0\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.xml" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\runtimes\win\lib\netstandard1.3\System.Security.Principal.Windows.dll" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Security.Principal.Windows.5.0.0\version.txt" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\Icon.png" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.xml" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\net46\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\netstandard2.0\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\lib\netstandard2.0\System.Text.Encoding.CodePages.xml" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\LICENSE.TXT" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\net461\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\net461\System.Text.Encoding.CodePages.xml" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.xml" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\netstandard2.0\System.Text.Encoding.CodePages.dll" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\runtimes\win\lib\netstandard2.0\System.Text.Encoding.CodePages.xml" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\THIRD-PARTY-NOTICES.TXT" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\useSharedDesignerContext.txt" />
-    <Content Include="packages\System.Text.Encoding.CodePages.5.0.0\version.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
