@@ -15,4 +15,10 @@
     <Folder Include="docs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="AntdUI">
+      <HintPath>lib\AntdUI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
