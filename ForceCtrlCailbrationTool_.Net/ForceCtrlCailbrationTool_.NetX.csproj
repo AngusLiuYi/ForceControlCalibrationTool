@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -7,15 +6,20 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Version>2.0.0.1</Version>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <Folder Include="lib\" />
     <Folder Include="src\" />
     <Folder Include="docs\" />
+    <Folder Include="data\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="AngusTools">
+      <HintPath>lib\AngusTools.dll</HintPath>
+    </Reference>
     <Reference Include="AntdUI">
       <HintPath>lib\AntdUI.dll</HintPath>
     </Reference>

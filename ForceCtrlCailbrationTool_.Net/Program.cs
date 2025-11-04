@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace ForceCtrlCailbrationTool_.Net_x._0_
 {
     internal static class Program
@@ -11,7 +13,17 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Frm_Main());
+
+            Frm_Main frm_Main = new Frm_Main();
+            Application.Run(frm_Main);
+            switch (frm_Main.IsStartGuide)
+            {
+                case 2:
+                    Application.Run(new Frm_Basic(2));break;
+                default:
+                    break;
+            }
+
         }
     }
 }
