@@ -31,7 +31,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         private void Frm_Main_Load(object sender, EventArgs e)
         {
             //版本控制显示在工具栏
-            pageHeader_FrmMain.SubText = Application.ProductVersion.Substring(0, 8);
+            pageHeader_FrmMain.SubText = Application.ProductVersion[..8];
 
             DataTable dt = AngusTools.FileHelper.CfgHelper.CfgToDataTable(CfgFilePath);
 
