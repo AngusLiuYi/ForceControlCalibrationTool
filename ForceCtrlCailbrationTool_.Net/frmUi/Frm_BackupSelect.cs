@@ -13,22 +13,43 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
 {
     public partial class Frm_BackupSelect : AntdUI.Window
     {
-        public Frm_BackupSelect(string[] fileNames)
+        public Frm_BackupSelect(string[] filePathNames)
         {
             InitializeComponent();
-            _FileNames = fileNames;
+            _FilePathNames = filePathNames;
+
         }
-        private string[] _FileNames;
-        private List<AntdUI.Radio> ListRadio = new();
+        private string[] _FilePathNames;
+        public int SelectedFilesValue = -1;
+
         private void Frm_BackupSelect_Load(object sender, EventArgs e)
         {
-            Pan_main.Controls.Clear();
-            for (int i = 0; i < _FileNames.Length; i++)
+            string[] fileNames = new string[_FilePathNames.Length];
+            for (int i = 0; i < _FilePathNames.Length; i++)
             {
-                Pan_main.Controls.Add(new AntdUI.Radio());
-                Pan_main.Controls[i].Text = _FileNames[i];
-                Pan_main.Controls[i].Location = new Point(27, 27 + 50 * i);
+                fileNames[i] = Path.GetFileNameWithoutExtension(_FilePathNames[i]);
             }
+            Pan_main.Controls.Clear();
+            for (int i = 0; i < _FilePathNames.Length; i++)
+            {
+                Pan_main.Controls.Add(new AntdUI.Radio() { AutoSize = true, Tag = i, Text = fileNames[i] });
+                Pan_main.Controls[i].Location = new Point(27 + 190 * (i / 3), 27 + 50 * (i % 3));
+                Pan_main.Controls[i].DoubleClick += Radios_DoubleClick;
+            }
+        }
+
+        private void Radios_DoubleClick(object? sender, EventArgs e)
+        {
+            AntdUI.Radio? radio=sender as AntdUI.Radio;
+            SelectedFilesValue = (int)(radio?.Tag ?? -1);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void Btn_Canel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.DialogResult = DialogResult.Cancel;
         }
     }
 }

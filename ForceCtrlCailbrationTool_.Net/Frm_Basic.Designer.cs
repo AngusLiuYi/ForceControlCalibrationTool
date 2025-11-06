@@ -55,6 +55,7 @@
             Name = "Frm_Basic";
             Text = "Frm_Basic";
             Load += Frm_Basic_Load;
+            Shown += Frm_Basic_Shown;
             ResumeLayout(false);
         }
 
