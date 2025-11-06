@@ -32,8 +32,14 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
             Pan_main.Controls.Clear();
             for (int i = 0; i < _FilePathNames.Length; i++)
             {
-                Pan_main.Controls.Add(new AntdUI.Radio() { AutoSize = true, Tag = i, Text = fileNames[i] });
-                Pan_main.Controls[i].Location = new Point(27 + 190 * (i / 3), 27 + 50 * (i % 3));
+                Pan_main.Controls.Add(new AntdUI.Radio()
+                {
+                    AutoSize = true,
+                    BackColor = Color.Transparent,
+                    Tag = i,
+                    Text = fileNames[i]
+                });
+                Pan_main.Controls[i].Location = new Point(30 + 300 * (i / 5), 30 + 50 * (i % 5));
                 Pan_main.Controls[i].DoubleClick += Radios_DoubleClick;
             }
         }
