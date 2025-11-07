@@ -104,6 +104,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                                     "存在数据备份",
                                     "检测到本地存在标定数据备份，是否加载？");
             if (res == DialogResult.OK) LoadBackupFile(strs);
+            Tb_DataInput.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -231,6 +232,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             {
                 DtCailbration.Rows[i][0] = i + 1;
             }
+
+            Tb_DataInput.DataSource = DtCailbration;
         }
 
         private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
