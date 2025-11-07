@@ -44,12 +44,11 @@
             pageHeader_FrmBasic.Dock = DockStyle.Top;
             pageHeader_FrmBasic.Font = new Font("Microsoft YaHei UI", 12F);
             pageHeader_FrmBasic.Location = new Point(0, 0);
-            pageHeader_FrmBasic.Margin = new Padding(4);
             pageHeader_FrmBasic.MaximizeBox = false;
             pageHeader_FrmBasic.Name = "pageHeader_FrmBasic";
-            pageHeader_FrmBasic.Padding = new Padding(0, 0, 10, 0);
+            pageHeader_FrmBasic.Padding = new Padding(0, 0, 8, 0);
             pageHeader_FrmBasic.ShowButton = true;
-            pageHeader_FrmBasic.Size = new Size(990, 42);
+            pageHeader_FrmBasic.Size = new Size(774, 36);
             pageHeader_FrmBasic.SubFont = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
             pageHeader_FrmBasic.SubText = "主界面";
             pageHeader_FrmBasic.TabIndex = 20;
@@ -60,20 +59,18 @@
             panel1.Controls.Add(formsPlot1);
             panel1.Controls.Add(Tb_DataInput);
             panel1.Dock = DockStyle.Left;
-            panel1.Location = new Point(0, 42);
-            panel1.Margin = new Padding(4);
+            panel1.Location = new Point(0, 36);
             panel1.Name = "panel1";
-            panel1.Size = new Size(309, 663);
+            panel1.Size = new Size(240, 569);
             panel1.TabIndex = 21;
             // 
             // formsPlot1
             // 
             formsPlot1.DisplayScale = 1F;
             formsPlot1.Dock = DockStyle.Fill;
-            formsPlot1.Location = new Point(0, 244);
-            formsPlot1.Margin = new Padding(4);
+            formsPlot1.Location = new Point(0, 207);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(309, 419);
+            formsPlot1.Size = new Size(240, 362);
             formsPlot1.TabIndex = 4;
             // 
             // Tb_DataInput
@@ -89,10 +86,9 @@
             Tb_DataInput.EditSelection = AntdUI.TEditSelection.All;
             Tb_DataInput.Gap = 12;
             Tb_DataInput.Location = new Point(0, 0);
-            Tb_DataInput.Margin = new Padding(4);
             Tb_DataInput.Name = "Tb_DataInput";
             Tb_DataInput.Radius = 6;
-            Tb_DataInput.Size = new Size(309, 244);
+            Tb_DataInput.Size = new Size(240, 207);
             Tb_DataInput.TabIndex = 3;
             Tb_DataInput.MouseDown += Tb_DataInput_MouseDown;
             // 
@@ -106,11 +102,10 @@
             Tb_Result.Dock = DockStyle.Top;
             Tb_Result.EditMode = AntdUI.TEditMode.DoubleClick;
             Tb_Result.Gap = 12;
-            Tb_Result.Location = new Point(309, 42);
-            Tb_Result.Margin = new Padding(4);
+            Tb_Result.Location = new Point(240, 36);
             Tb_Result.Name = "Tb_Result";
             Tb_Result.Radius = 6;
-            Tb_Result.Size = new Size(681, 169);
+            Tb_Result.Size = new Size(534, 144);
             Tb_Result.TabIndex = 4;
             // 
             // Pan_DataCheckout
@@ -118,37 +113,35 @@
             Pan_DataCheckout.ArrowSize = 10;
             Pan_DataCheckout.Controls.Add(divider2);
             Pan_DataCheckout.Dock = DockStyle.Fill;
-            Pan_DataCheckout.Location = new Point(309, 211);
-            Pan_DataCheckout.Margin = new Padding(4);
+            Pan_DataCheckout.Location = new Point(240, 180);
             Pan_DataCheckout.Name = "Pan_DataCheckout";
             Pan_DataCheckout.Radius = 10;
             Pan_DataCheckout.Shadow = 24;
             Pan_DataCheckout.ShadowOpacity = 0.18F;
             Pan_DataCheckout.ShadowOpacityAnimation = true;
-            Pan_DataCheckout.Size = new Size(681, 494);
+            Pan_DataCheckout.Size = new Size(534, 425);
             Pan_DataCheckout.TabIndex = 26;
             // 
             // divider2
             // 
             divider2.BackColor = Color.Transparent;
             divider2.Dock = DockStyle.Top;
-            divider2.Location = new Point(30, 30);
-            divider2.Margin = new Padding(13, 12, 13, 12);
+            divider2.Location = new Point(24, 24);
+            divider2.Margin = new Padding(10);
             divider2.Name = "divider2";
-            divider2.Size = new Size(621, 1);
+            divider2.Size = new Size(486, 1);
             divider2.TabIndex = 1;
             divider2.Text = "测试拟合结果";
             // 
             // Frm_Basic
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(990, 705);
+            ClientSize = new Size(774, 605);
             Controls.Add(Pan_DataCheckout);
             Controls.Add(Tb_Result);
             Controls.Add(panel1);
             Controls.Add(pageHeader_FrmBasic);
-            Margin = new Padding(4);
             Name = "Frm_Basic";
             Text = "Frm_Basic";
             Load += Frm_Basic_Load;

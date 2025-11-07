@@ -19,17 +19,21 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
 
         private void Btn_StartGuide_Click(object sender, EventArgs e)
         {
-            SaveConfig();
-            IsStartGuide = 1;
-            this.Close();
+            //TODO--引导实现
+            //SaveConfig();
+            //IsStartGuide = 1;
+            //this.Close();
+            AntdUI.Modal.open(this, "Error", "暂未实现引导步骤！", AntdUI.TType.Error);
+
         }
 
         private void Btn_StartOutGuide_Click(object sender, EventArgs e)
         {
             //跳过引导，直接载入主界面
-            this.Close();
+            this.Hide();
             IsStartGuide = 2;
             SaveConfig();
+            this.Close();
         }
 
         private void Frm_Main_Load(object sender, EventArgs e)

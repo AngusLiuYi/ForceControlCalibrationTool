@@ -60,7 +60,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             DtCailbration = new();
             DtCailbration.Columns.Add("序号");
             DtCailbration.Columns.Add("力矩限制");
-            DtCailbration.Columns.Add("实际输出力");
+            DtCailbration.Columns.Add("实际压力");
             DtCailbration.Rows.Add(1, 0, 0);
             //
             if (DtCfgBackup.Rows[0]["EnableCailCurrent"].ToString() == "True")
@@ -92,7 +92,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //非引导模式下搜索data文件夹内是否存在标定数据备份
             //带电流反馈与不带电流反馈的也要区分，防止标定数据异常
             string[] strs;
-            if (_EnableCailCurrent) 
+            if (_EnableCailCurrent)
                 strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + "_C.csv");
             else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
 
@@ -127,8 +127,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             ChartRefresh(true, _EnableCailCurrent);
         }
 
-        
-        private void ChartRefresh(bool refreshLine,bool isCurrent)
+
+        private void ChartRefresh(bool refreshLine, bool isCurrent)
         {
             //图表绑定数据需要list格式，需要进行转换
             //数据展示点位图
@@ -137,7 +137,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             List<double> listCurrent = [];
             foreach (DataRow row in DtCailbration.Rows)
             {
-                listForce.Add(Convert.ToDouble(row["实际输出力"]));
+                listForce.Add(Convert.ToDouble(row["实际压力"]));
                 listTorque.Add(Convert.ToDouble(row["力矩限制"]));
                 if (isCurrent) listCurrent.Add(Convert.ToDouble(row["反馈电流"]));
             }
@@ -146,7 +146,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //TODO 同步显示电流与力的点位图实现
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.Add.ScatterPoints(listTorque, listForce);
-            if(isCurrent) formsPlot1.Plot.Add.ScatterPoints(listCurrent, listForce);
+            if (isCurrent) formsPlot1.Plot.Add.ScatterPoints(listCurrent, listForce);
 
             //需要拟合时，计算结果并输出线图
             if (refreshLine)
@@ -209,6 +209,21 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             return true;
         }
 
+        /// <summary>
+        /// 对数据升序排序并更新序号
+        /// </summary>
+        private void DataTableSort()
+        {
+            //根据力矩控制列进行排序
+            DtCailbration.DefaultView.Sort = "力矩限制 ASC";
+            DtCailbration = DtCailbration.DefaultView.ToTable();
+            //更新序号
+            for (int i = 0; i < DtCailbration.Rows.Count; i++)
+            {
+                DtCailbration.Rows[i][0] = i + 1;
+            }
+        }
+
         private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
         {
             //鼠标在数据录入表格上按下鼠标右键后创建右键菜单
@@ -216,8 +231,10 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 return;
             IContextMenuStripItem[] menuStripItems =
             [
+                new AntdUI.ContextMenuStripItem("刷新","对数据进行排序").SetIcon("ReloadOutlined"),
                 new AntdUI.ContextMenuStripItem("增加","增加一行数据到最下方").SetIcon("DiffOutlined"),
                 new AntdUI.ContextMenuStripItem("删除","删除本行数据").SetIcon("DeleteOutlined"),
+                new AntdUI.ContextMenuStripItemDivider(),
                 new AntdUI.ContextMenuStripItem("加载","加载历史数据").SetIcon("FolderOpenOutlined"),
                 new AntdUI.ContextMenuStripItem("保存","保存数据到备份").SetIcon("SaveOutlined"),
                 new AntdUI.ContextMenuStripItemDivider(),
@@ -226,13 +243,25 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             ];
 
             //委托右键菜单的实现
-            AntdUI.ContextMenuStrip.open(this, e => {
+            AntdUI.ContextMenuStrip.open(this, e =>
+            {
                 switch (e.Text)
                 {
+                    case "刷新":
+                        DataTableSort();
+                        break;
                     case "增加":
+                        //向末尾增加一行数据，补充默认值
+                        DtCailbration.Rows.Add(DtCailbration.Rows.Count + 1, 0, 0);
+                        if (_EnableCailCurrent) DtCailbration.Rows[^1]["反馈电流"] = 0;
                         break;
                     case "删除":
+                        //删除指定行的数据
+                        DtCailbration.Rows.RemoveAt(Tb_DataInput.SelectedIndex - 1);
                         break;
+                }
+                switch (e.Text)
+                {
                     case "加载":
                         //搜索data文件夹内是否存在标定数据备份
                         string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
@@ -243,23 +272,28 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                                     "根据当前选定的驱动器，未在指定文件夹下检测到备份文件。");
                             return;
                         }
+                        //加载备份文件
                         LoadBackupFile(strs);
                         break;
 
                     case "保存":
-                        if(DataCheckout(DtCailbration))
+                        DataTableSort();
+                        //数据校验完毕后保存数据
+                        if (DataCheckout(DtCailbration))
                         {
-                            Frm_SaveFile frm_SaveFile = new(DtCfgBackup.Rows[0]["DriveType"].ToString(), _EnableCailCurrent);
+                            Frm_SaveFile frm_SaveFile = new(DtCfgBackup.Rows[0]["DriveType"].ToString() ?? "null", _EnableCailCurrent);
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
                                 AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
                         }
                         break;
                     case "拟合":
+                        DataTableSort();
                         if (DataCheckout(DtCailbration))
                             ChartRefresh(true, _EnableCailCurrent);
                         break;
-
                     default:
+                        Tb_DataInput.DataSource = DtCailbration;
+                        ChartRefresh(false, false);
                         break;
                 }
             }, menuStripItems);

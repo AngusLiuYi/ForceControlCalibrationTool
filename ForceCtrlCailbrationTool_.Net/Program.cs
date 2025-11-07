@@ -19,6 +19,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             switch (frm_Main.IsStartGuide)
             {
                 case 2:
+                    frm_Main.Dispose();
                     Application.Run(new Frm_Basic(2));break;
                 default:
                     break;
