@@ -105,7 +105,7 @@
             Tb_Result.Location = new Point(240, 36);
             Tb_Result.Name = "Tb_Result";
             Tb_Result.Radius = 6;
-            Tb_Result.Size = new Size(534, 144);
+            Tb_Result.Size = new Size(534, 189);
             Tb_Result.TabIndex = 4;
             // 
             // Pan_DataCheckout
@@ -113,13 +113,13 @@
             Pan_DataCheckout.ArrowSize = 10;
             Pan_DataCheckout.Controls.Add(divider2);
             Pan_DataCheckout.Dock = DockStyle.Fill;
-            Pan_DataCheckout.Location = new Point(240, 180);
+            Pan_DataCheckout.Location = new Point(240, 225);
             Pan_DataCheckout.Name = "Pan_DataCheckout";
             Pan_DataCheckout.Radius = 10;
             Pan_DataCheckout.Shadow = 24;
             Pan_DataCheckout.ShadowOpacity = 0.18F;
             Pan_DataCheckout.ShadowOpacityAnimation = true;
-            Pan_DataCheckout.Size = new Size(534, 425);
+            Pan_DataCheckout.Size = new Size(534, 380);
             Pan_DataCheckout.TabIndex = 26;
             // 
             // divider2

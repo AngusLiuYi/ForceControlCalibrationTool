@@ -114,10 +114,15 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         {
             //创建文件选择窗口
             Frm_BackupSelect frm_BackupSelect = new(fileNames);
-            if (frm_BackupSelect.ShowDialog() != DialogResult.OK) return;
+            if (frm_BackupSelect.ShowDialog() != DialogResult.OK)
+            {
+                frm_BackupSelect.Dispose();
+                return;
+            }
 
             //接收用户选择的备份文件，展示到表格中
             DtCailbration = AngusTools.FileHelper.CsvHelper.CsvToDataTable(fileNames[frm_BackupSelect.SelectedFilesValue]);
+            frm_BackupSelect.Dispose();
             if (!DataCheckout(DtCailbration)) return;
 
             //刷新表格
@@ -151,22 +156,28 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //需要拟合时，计算结果并输出线图
             if (refreshLine)
             {
+                DtResult.Rows.Clear();
                 if (isCurrent)
                 {
-                    FittingData.FittingData_Method_1(listCurrent, listForce, out double slope, out double intercept, out double variance);
-                    double[] arrCurrent = [listCurrent[0], listCurrent.Last()];
-                    double[] arrVisualForce = [listCurrent[0] * slope + intercept, listCurrent.Last() * slope + intercept];
-                    formsPlot1.Plot.Add.ScatterLine(arrCurrent, arrVisualForce);
-                    TbResultRefresh(true, "最小二乘法", slope, intercept, variance);
+                    foreach (var fit in FittingData.ListFittingMethod)
+                    {
+                        fit(listCurrent, listForce, out string funcName, out double slope, out double intercept, out double variance);
+                        double[] arrCurrent = [listCurrent[0], listCurrent.Last()];
+                        double[] arrVisualForce = [listCurrent[0] * slope + intercept, listCurrent.Last() * slope + intercept];
+                        formsPlot1.Plot.Add.ScatterLine(arrCurrent, arrVisualForce);
+                        TbResultRefresh(true, funcName, slope, intercept, variance);
+                    }
                 }
                 else
                 {
-                    FittingData.FittingData_Method_1(listTorque, listForce, out double slope, out double intercept, out double variance);
-                    double[] arrTorque = [listTorque[0], listTorque.Last()];
-                    double[] arrForce = [listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept];
-                    formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
-                    TbResultRefresh(false, "最小二乘法", slope, intercept, variance);
-
+                    foreach (var fit in FittingData.ListFittingMethod)
+                    {
+                        fit(listTorque, listForce, out string funcName, out double slope, out double intercept, out double variance);
+                        double[] arrTorque = [listTorque[0], listTorque.Last()];
+                        double[] arrForce = [listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept];
+                        formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
+                        TbResultRefresh(false, funcName, slope, intercept, variance);
+                    }
                 }
             }
 
@@ -179,11 +190,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         {
             string equation;
             if (isCurrent) equation = "VisualForce = " + slope.ToString() + " * Current + " + intercept.ToString();
-            else
-            {
-                equation = "Force = " + slope.ToString() + " * Torque + " + intercept.ToString();
-                DtResult.Rows.Clear();
-            }
+            else equation = "Force = " + slope.ToString() + " * Torque + " + intercept.ToString();
+
             string[] res =
             [
                 fitName,
@@ -193,6 +201,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 variance.ToString(),
             ];
             DtResult.Rows.Add(res);
+
             Tb_Result.DataSource = DtResult;
 
         }
@@ -284,6 +293,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                             Frm_SaveFile frm_SaveFile = new(DtCfgBackup.Rows[0]["DriveType"].ToString() ?? "null", _EnableCailCurrent);
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
                                 AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
+                            frm_SaveFile.Dispose();
                         }
                         break;
                     case "拟合":
