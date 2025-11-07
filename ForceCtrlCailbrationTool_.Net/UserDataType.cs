@@ -12,7 +12,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// 标定数据备份路径地址
         /// 完整显示：相对路径
         /// </summary>
-        public static readonly string CsvFilePath = @"..\..\..\Data";
+        public static readonly string CsvFilePath = @"..\..\..\Data\";
 
         /// <summary>
         /// 驱动器类型

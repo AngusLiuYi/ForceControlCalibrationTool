@@ -249,13 +249,14 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                     case "保存":
                         if(DataCheckout(DtCailbration))
                         {
-                            Frm_SaveFile frm_SaveFile = new Frm_SaveFile();
+                            Frm_SaveFile frm_SaveFile = new(DtCfgBackup.Rows[0]["DriveType"].ToString(), _EnableCailCurrent);
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
-                                AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, DtCfgBackup.Rows[0]["DriveType"] + frm_SaveFile.FileName);
+                                AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
                         }
                         break;
                     case "拟合":
-
+                        if (DataCheckout(DtCailbration))
+                            ChartRefresh(true, _EnableCailCurrent);
                         break;
 
                     default:
