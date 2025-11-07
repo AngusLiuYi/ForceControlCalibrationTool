@@ -13,13 +13,25 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
 {
     public partial class Frm_BackupSelect : AntdUI.Window
     {
+        /// <summary>
+        /// 弹出界面，选择需要的数据项
+        /// </summary>
+        /// <param name="filePathNames">文件的名称组</param>
         public Frm_BackupSelect(string[] filePathNames)
         {
             InitializeComponent();
             _FilePathNames = filePathNames;
 
         }
-        private string[] _FilePathNames;
+
+        /// <summary>
+        /// 文件名称组
+        /// </summary>
+        private readonly string[] _FilePathNames;
+
+        /// <summary>
+        /// 选择的项值
+        /// </summary>
         public int SelectedFilesValue = -1;
 
         private void Frm_BackupSelect_Load(object sender, EventArgs e)

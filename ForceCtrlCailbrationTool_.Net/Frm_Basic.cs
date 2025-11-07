@@ -15,87 +15,185 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
 {
     public partial class Frm_Basic : AntdUI.Window
     {
+        /// <summary>
+        /// 主界面，数据录入、计算、结果展示
+        /// </summary>
+        /// <param name="isEnableGuide">是否引导模式</param>
         public Frm_Basic(int isEnableGuide)
         {
             InitializeComponent();
             _IsEnableGuide = isEnableGuide;
         }
-        private int _IsEnableGuide;
-        private string CsvFilePath = @"..\..\..\Data";
-        private DataTable DtCailbration, DtResult;
-        private string csvFileName;
+
+        /// <summary>
+        /// 是否载入引导界面
+        /// </summary>
+        private readonly int _IsEnableGuide;
+
+        private bool _EnableCailCurrent = false;
+
+        /// <summary>
+        /// 标定数据存放表
+        /// </summary>
+        private DataTable DtCailbration;
+
+        /// <summary>
+        /// 拟合结果存放表单
+        /// </summary>
+        private DataTable DtResult;
+
+        /// <summary>
+        /// config文件读取储存
+        /// </summary>
+        private DataTable DtCfgBackup;
+
 
         private void Frm_Basic_Load(object sender, EventArgs e)
         {
-            //版本控制显示在工具栏
-            pageHeader_FrmMain.SubText += Application.ProductVersion[..8];
+            //当前版本显示在工具栏
+            pageHeader_FrmBasic.SubText += Application.ProductVersion[..8];
 
-            csvFileName = AngusTools.FileHelper.CfgHelper.GetCfgValue(CsvFilePath + "\\Config.config", "DriveType");
+            //读取Config文件
+            DtCfgBackup = AngusTools.FileHelper.CfgHelper.CfgToDataTable(UserDataType.CfgFilePath);
 
-        }
+            //标定数据录入表格显示空值
+            DtCailbration = new();
+            DtCailbration.Columns.Add("序号");
+            DtCailbration.Columns.Add("力矩限制");
+            DtCailbration.Columns.Add("实际输出力");
+            DtCailbration.Rows.Add(1, 0, 0);
+            //
+            if (DtCfgBackup.Rows[0]["EnableCailCurrent"].ToString() == "True")
+            {
+                _EnableCailCurrent = true;
+                DtCailbration.Columns.Add("反馈电流");
+                DtCailbration.Rows[0]["EnableCailCurrent"] = 0;
+            }
+            Tb_DataInput.DataSource = DtCailbration;
 
-        private void GetResult(List<double> listX, List<double> listY, out double slope, out double intercept)
-        {
-            DtResult = new DataTable();
+            //拟合结果存入表格，显示控制
+            DtResult = new();
             DtResult.Columns.Add("算法");
             DtResult.Columns.Add("结果表达式");
             DtResult.Columns.Add("斜率");
             DtResult.Columns.Add("截距");
             DtResult.Columns.Add("方差");
-            double variance;
-            FittingData.FittingData_Method_1(listX, listY, out slope, out intercept, out variance);
-            string[] res = new string[]
-            {
-                "最小二乘法",
-                "Force = "+slope.ToString()+" * Torque + "+intercept.ToString(),
-                slope.ToString(),
-                intercept.ToString(),
-                variance.ToString(),
-            };
-            DtResult.Rows.Add(res);
+            DtResult.Rows.Add("null", "null", 0, 0, 0);
             Tb_Result.DataSource = DtResult;
         }
 
+        /// <summary>
+        /// 窗体首次显示时检测备份文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Frm_Basic_Shown(object sender, EventArgs e)
         {
             //非引导模式下搜索data文件夹内是否存在标定数据备份
-            string[] strs = Directory.GetFiles(CsvFilePath, "*" + csvFileName + ".csv");
-            if (strs.Length <= 0)
-                return;
+            //带电流反馈与不带电流反馈的也要区分，防止标定数据异常
+            string[] strs;
+            if (_EnableCailCurrent) 
+                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + "_C.csv");
+            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
+
+            //如果不存在备份文件，表单显示空表头
+            if (strs.Length <= 0) return;
+
+            //弹出询问是否加载备份
             DialogResult res = AntdUI.Modal.open(this,
                                     "存在数据备份",
                                     "检测到本地存在标定数据备份，是否加载？");
-            if (res == DialogResult.OK)
-                LoadBackupFile(strs);
+            if (res == DialogResult.OK) LoadBackupFile(strs);
         }
 
-
+        /// <summary>
+        /// 传入待选文件路径列表，在弹窗中供用户选择
+        /// </summary>
+        /// <param name="fileNames">待选文件路径列表</param>
         private void LoadBackupFile(string[] fileNames)
         {
-            Frm_BackupSelect frm_BackupSelect = new Frm_BackupSelect(fileNames);
-            if (frm_BackupSelect.ShowDialog() != DialogResult.OK)
-                return;
+            //创建文件选择窗口
+            Frm_BackupSelect frm_BackupSelect = new(fileNames);
+            if (frm_BackupSelect.ShowDialog() != DialogResult.OK) return;
+
+            //接收用户选择的备份文件，展示到表格中
             DtCailbration = AngusTools.FileHelper.CsvHelper.CsvToDataTable(fileNames[frm_BackupSelect.SelectedFilesValue]);
+            if (!DataCheckout(DtCailbration)) return;
+
+            //刷新表格
             Tb_DataInput.DataSource = DtCailbration;
-            List<double> listForce = new();
-            List<double> listTorque = new();
-            List<double> listCurrent = new();
 
-            for (int i = 0; i < DtCailbration.Rows.Count; i++)
+            //刷新图表
+            ChartRefresh(true, _EnableCailCurrent);
+        }
+
+        
+        private void ChartRefresh(bool refreshLine,bool isCurrent)
+        {
+            //图表绑定数据需要list格式，需要进行转换
+            //数据展示点位图
+            List<double> listForce = [];
+            List<double> listTorque = [];
+            List<double> listCurrent = [];
+            foreach (DataRow row in DtCailbration.Rows)
             {
-                listForce.Add(Convert.ToDouble(DtCailbration.Rows[i]["实际输出力"]));
-                listTorque.Add(Convert.ToDouble(DtCailbration.Rows[i]["力矩限制"]));
-
+                listForce.Add(Convert.ToDouble(row["实际输出力"]));
+                listTorque.Add(Convert.ToDouble(row["力矩限制"]));
+                if (isCurrent) listCurrent.Add(Convert.ToDouble(row["反馈电流"]));
             }
-            double slope, intercept;
+
+            //清除图表当前内容，增加点位图
+            //TODO 同步显示电流与力的点位图实现
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.Add.ScatterPoints(listTorque, listForce);
-            GetResult(listTorque, listForce, out slope, out intercept);
-            double[] arrTorque = new double[] { listTorque[0], listTorque.Last() };
-            double[] arrForce = new double[] { listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept };
-            formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
+            if(isCurrent) formsPlot1.Plot.Add.ScatterPoints(listCurrent, listForce);
+
+            //需要拟合时，计算结果并输出线图
+            if (refreshLine)
+            {
+                if (isCurrent)
+                {
+                    FittingData.FittingData_Method_1(listCurrent, listForce, out double slope, out double intercept, out double variance);
+                    double[] arrCurrent = [listCurrent[0], listCurrent.Last()];
+                    double[] arrVisualForce = [listCurrent[0] * slope + intercept, listCurrent.Last() * slope + intercept];
+                    formsPlot1.Plot.Add.ScatterLine(arrCurrent, arrVisualForce);
+                    TbResultRefresh(true, "最小二乘法", slope, intercept, variance);
+                }
+                else
+                {
+                    FittingData.FittingData_Method_1(listTorque, listForce, out double slope, out double intercept, out double variance);
+                    double[] arrTorque = [listTorque[0], listTorque.Last()];
+                    double[] arrForce = [listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept];
+                    formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
+                    TbResultRefresh(false, "最小二乘法", slope, intercept, variance);
+
+                }
+            }
+
+            //缩放图表达到居中效果
             formsPlot1.Plot.Axes.AutoScale();
             formsPlot1.Refresh();
+        }
+
+        private void TbResultRefresh(bool isCurrent, string fitName, double slope, double intercept, double variance)
+        {
+            string equation;
+            if (isCurrent) equation = "VisualForce = " + slope.ToString() + " * Current + " + intercept.ToString();
+            else
+            {
+                equation = "Force = " + slope.ToString() + " * Torque + " + intercept.ToString();
+                DtResult.Rows.Clear();
+            }
+            string[] res =
+            [
+                fitName,
+                equation,
+                slope.ToString(),
+                intercept.ToString(),
+                variance.ToString(),
+            ];
+            DtResult.Rows.Add(res);
+            Tb_Result.DataSource = DtResult;
 
         }
 
@@ -107,11 +205,13 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <returns></returns>
         private bool DataCheckout(DataTable dt)
         {
+            //TODO 未实现
             return true;
         }
 
         private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
         {
+            //鼠标在数据录入表格上按下鼠标右键后创建右键菜单
             if (e.Button != MouseButtons.Right)
                 return;
             IContextMenuStripItem[] menuStripItems =
@@ -124,6 +224,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 new AntdUI.ContextMenuStripItem("拟合","计算拟合结果").SetIcon("FunctionOutlined"),
 
             ];
+
+            //委托右键菜单的实现
             AntdUI.ContextMenuStrip.open(this, e => {
                 switch (e.Text)
                 {
@@ -133,7 +235,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         break;
                     case "加载":
                         //搜索data文件夹内是否存在标定数据备份
-                        string[] strs = Directory.GetFiles(CsvFilePath, "*" + csvFileName + ".csv");
+                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
                         if (strs.Length <= 0)
                         {
                             AntdUI.Modal.open(this,
@@ -149,10 +251,11 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         {
                             Frm_SaveFile frm_SaveFile = new Frm_SaveFile();
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
-                                AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, csvFileName + frm_SaveFile.FileName);
+                                AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, DtCfgBackup.Rows[0]["DriveType"] + frm_SaveFile.FileName);
                         }
                         break;
                     case "拟合":
+
                         break;
 
                     default:

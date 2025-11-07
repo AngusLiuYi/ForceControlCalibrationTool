@@ -28,33 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pageHeader_FrmMain = new AntdUI.PageHeader();
+            pageHeader_FrmBasic = new AntdUI.PageHeader();
             panel1 = new Panel();
             formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             Tb_DataInput = new AntdUI.Table();
             Tb_Result = new AntdUI.Table();
             Pan_DataCheckout = new AntdUI.Panel();
             divider2 = new AntdUI.Divider();
-            Btn_LoadFile = new AntdUI.Button();
             panel1.SuspendLayout();
             Pan_DataCheckout.SuspendLayout();
             SuspendLayout();
             // 
-            // pageHeader_FrmMain
+            // pageHeader_FrmBasic
             // 
-            pageHeader_FrmMain.Dock = DockStyle.Top;
-            pageHeader_FrmMain.Font = new Font("Microsoft YaHei UI", 12F);
-            pageHeader_FrmMain.Location = new Point(0, 0);
-            pageHeader_FrmMain.Margin = new Padding(4);
-            pageHeader_FrmMain.MaximizeBox = false;
-            pageHeader_FrmMain.Name = "pageHeader_FrmMain";
-            pageHeader_FrmMain.Padding = new Padding(0, 0, 10, 0);
-            pageHeader_FrmMain.ShowButton = true;
-            pageHeader_FrmMain.Size = new Size(990, 42);
-            pageHeader_FrmMain.SubFont = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            pageHeader_FrmMain.SubText = "主界面";
-            pageHeader_FrmMain.TabIndex = 20;
-            pageHeader_FrmMain.Text = "力控标定计算器";
+            pageHeader_FrmBasic.Dock = DockStyle.Top;
+            pageHeader_FrmBasic.Font = new Font("Microsoft YaHei UI", 12F);
+            pageHeader_FrmBasic.Location = new Point(0, 0);
+            pageHeader_FrmBasic.Margin = new Padding(4);
+            pageHeader_FrmBasic.MaximizeBox = false;
+            pageHeader_FrmBasic.Name = "pageHeader_FrmBasic";
+            pageHeader_FrmBasic.Padding = new Padding(0, 0, 10, 0);
+            pageHeader_FrmBasic.ShowButton = true;
+            pageHeader_FrmBasic.Size = new Size(990, 42);
+            pageHeader_FrmBasic.SubFont = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            pageHeader_FrmBasic.SubText = "主界面";
+            pageHeader_FrmBasic.TabIndex = 20;
+            pageHeader_FrmBasic.Text = "力控标定计算器";
             // 
             // panel1
             // 
@@ -118,7 +117,6 @@
             // 
             Pan_DataCheckout.ArrowSize = 10;
             Pan_DataCheckout.Controls.Add(divider2);
-            Pan_DataCheckout.Controls.Add(Btn_LoadFile);
             Pan_DataCheckout.Dock = DockStyle.Fill;
             Pan_DataCheckout.Location = new Point(309, 211);
             Pan_DataCheckout.Margin = new Padding(4);
@@ -139,18 +137,7 @@
             divider2.Name = "divider2";
             divider2.Size = new Size(621, 1);
             divider2.TabIndex = 1;
-            // 
-            // Btn_LoadFile
-            // 
-            Btn_LoadFile.AutoSizeMode = AntdUI.TAutoSize.Auto;
-            Btn_LoadFile.IconSvg = "FolderOpenOutlined";
-            Btn_LoadFile.Location = new Point(95, 99);
-            Btn_LoadFile.Margin = new Padding(4);
-            Btn_LoadFile.Name = "Btn_LoadFile";
-            Btn_LoadFile.Size = new Size(109, 45);
-            Btn_LoadFile.TabIndex = 22;
-            Btn_LoadFile.Text = "加载备份";
-            Btn_LoadFile.Type = AntdUI.TTypeMini.Primary;
+            divider2.Text = "测试拟合结果";
             // 
             // Frm_Basic
             // 
@@ -160,7 +147,7 @@
             Controls.Add(Pan_DataCheckout);
             Controls.Add(Tb_Result);
             Controls.Add(panel1);
-            Controls.Add(pageHeader_FrmMain);
+            Controls.Add(pageHeader_FrmBasic);
             Margin = new Padding(4);
             Name = "Frm_Basic";
             Text = "Frm_Basic";
@@ -168,19 +155,17 @@
             Shown += Frm_Basic_Shown;
             panel1.ResumeLayout(false);
             Pan_DataCheckout.ResumeLayout(false);
-            Pan_DataCheckout.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private AntdUI.PageHeader pageHeader_FrmMain;
+        private AntdUI.PageHeader pageHeader_FrmBasic;
         private Panel panel1;
         private AntdUI.Table Tb_DataInput;
         private ScottPlot.WinForms.FormsPlot formsPlot1;
         private AntdUI.Table Tb_Result;
         private AntdUI.Panel Pan_DataCheckout;
         private AntdUI.Divider divider2;
-        private AntdUI.Button Btn_LoadFile;
     }
 }

@@ -14,7 +14,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            Frm_Main frm_Main = new Frm_Main();
+            Frm_Main frm_Main = new();
             Application.Run(frm_Main);
             switch (frm_Main.IsStartGuide)
             {

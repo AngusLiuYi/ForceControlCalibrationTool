@@ -2,6 +2,21 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
 {
     public static class UserDataType
     {
+        /// <summary>
+        /// config文件存放路径地址
+        /// 完整显示：相对路径+文件名+类型后缀
+        /// </summary>
+        public static readonly string CfgFilePath = @"..\..\..\Data\Config.config";
+
+        /// <summary>
+        /// 标定数据备份路径地址
+        /// 完整显示：相对路径
+        /// </summary>
+        public static readonly string CsvFilePath = @"..\..\..\Data";
+
+        /// <summary>
+        /// 驱动器类型
+        /// </summary>
         public enum DriveType
         {
             ISD大寰驱动器 = 0,
@@ -18,6 +33,10 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             SAC_S_电缸 = 6,
             SAC_NF_电缸_闭环力控 = 6,
         }
+
+        /// <summary>
+        /// 电机类型
+        /// </summary>
         public enum ServoType
         {
             直驱_Dla_Dlar = 0,
