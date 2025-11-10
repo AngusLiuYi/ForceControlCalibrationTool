@@ -45,7 +45,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <summary>
         /// config文件读取储存
         /// </summary>
-        private DataTable DtCfgBackup;
+        private DataRow RowCfgBackup;
 
 
         private void Frm_Basic_Load(object sender, EventArgs e)
@@ -54,32 +54,43 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             pageHeader_FrmBasic.SubText += Application.ProductVersion[..8];
 
             //读取Config文件
-            DtCfgBackup = AngusTools.FileHelper.CfgHelper.CfgToDataTable(UserDataType.CfgFilePath);
+            RowCfgBackup = AngusTools.FileHelper.CfgHelper.CfgToDataTable(UserDataType.CfgFilePath).Rows[0];
 
+            //标定数据录入表格数值刷新
             //标定数据录入表格显示空值
             DtCailbration = new();
-            DtCailbration.Columns.Add("序号");
-            DtCailbration.Columns.Add("力矩限制");
-            DtCailbration.Columns.Add("实际压力");
+            DtCailbration.Columns.Add("序号", typeof(double));
+            DtCailbration.Columns.Add("力矩限制", typeof(double));
+            DtCailbration.Columns.Add("实际压力", typeof(double));
             DtCailbration.Rows.Add(1, 0, 0);
             //
-            if (DtCfgBackup.Rows[0]["EnableCailCurrent"].ToString() == "True")
+            if (RowCfgBackup["EnableCailCurrent"].ToString() == "True")
             {
                 _EnableCailCurrent = true;
-                DtCailbration.Columns.Add("反馈电流");
-                DtCailbration.Rows[0]["EnableCailCurrent"] = 0;
+                DtCailbration.Columns.Add("反馈电流", typeof(double));
+                DtCailbration.Rows[0]["反馈电流"] = 0;
             }
             Tb_DataInput.DataSource = DtCailbration;
 
-            //拟合结果存入表格，显示控制
+            //拟合结果表格数值刷新
+            //存入表格，显示控制
             DtResult = new();
-            DtResult.Columns.Add("算法");
-            DtResult.Columns.Add("结果表达式");
-            DtResult.Columns.Add("斜率");
-            DtResult.Columns.Add("截距");
-            DtResult.Columns.Add("方差");
+            DtResult.Columns.Add("算法", typeof(string));
+            DtResult.Columns.Add("结果表达式", typeof(string));
+            DtResult.Columns.Add("斜率", typeof(double));
+            DtResult.Columns.Add("截距", typeof(double));
+            DtResult.Columns.Add("方差", typeof(double));
             DtResult.Rows.Add("null", "null", 0, 0, 0);
             Tb_Result.DataSource = DtResult;
+
+            //校验数据表格单位刷新
+            //-如果需要n-unit的实际压力，则应该给add写入n值
+            //--实际压力单位为用户单位
+            Lb_TarForce1.SuffixText = RowCfgBackup["ForceUnit"].ToString();
+            //--应设力矩限制的地址：根据驱动器类型确认
+            Lb_TarTorque1.PrefixText = UserDataType.TorqueSettingAdr(Enum.Parse<UserDataType.DriveType>(RowCfgBackup["DriveType"].ToString() ?? "SAC_NP2_轴一"));
+            //--应设力矩限制的单位
+            Lb_TarTorque1.SuffixText = RowCfgBackup["TorqueUnit"].ToString();
         }
 
         /// <summary>
@@ -93,8 +104,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //带电流反馈与不带电流反馈的也要区分，防止标定数据异常
             string[] strs;
             if (_EnableCailCurrent)
-                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + "_C.csv");
-            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
+                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + "_C.csv");
+            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + ".csv");
 
             //如果不存在备份文件，表单显示空表头
             if (strs.Length <= 0) return;
@@ -158,6 +169,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             if (refreshLine)
             {
                 DtResult.Rows.Clear();
+                Slt_MethodChange.Items.Clear();
+                Pan_DataCheckout.Enabled = true;
                 if (isCurrent)
                 {
                     foreach (var fit in FittingData.ListFittingMethod)
@@ -178,8 +191,14 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         double[] arrForce = [listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept];
                         formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
                         TbResultRefresh(false, funcName, slope, intercept, variance);
+                        Slt_MethodChange.Items.Add(funcName + ':' + DtResult.Rows.Count);
                     }
                 }
+            }
+            else
+            {
+                //Slt_MethodChange.Items.Clear();
+                Pan_DataCheckout.Enabled = false;
             }
 
             //缩放图表达到居中效果
@@ -276,7 +295,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 {
                     case "加载":
                         //搜索data文件夹内是否存在标定数据备份
-                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + DtCfgBackup.Rows[0]["DriveType"] + ".csv");
+                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + ".csv");
                         if (strs.Length <= 0)
                         {
                             AntdUI.Modal.open(this,
@@ -293,7 +312,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         //数据校验完毕后保存数据
                         if (DataCheckout(DtCailbration))
                         {
-                            Frm_SaveFile frm_SaveFile = new(DtCfgBackup.Rows[0]["DriveType"].ToString() ?? "null", _EnableCailCurrent);
+                            Frm_SaveFile frm_SaveFile = new(RowCfgBackup["DriveType"].ToString() ?? "null", _EnableCailCurrent);
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
                                 AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
                             frm_SaveFile.Dispose();
@@ -310,6 +329,34 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         break;
                 }
             }, menuStripItems);
+        }
+
+        private void Lb_TarForce1_TextChanged(object sender, EventArgs e)
+        {
+            if (Slt_MethodChange.SelectedValue == null)
+                return;
+            try
+            {
+                string select = (string)Slt_MethodChange.SelectedValue;
+                DataRow rows = DtResult.Rows[Convert.ToInt32(select[(select.IndexOf(':') + 1)..]) - 1];
+                double tarForce = Convert.ToDouble(Lb_TarForce1.Text);
+                Lb_TarTorque1.Text = Math.Round((tarForce - (double)rows["截距"]) / (double)rows["斜率"], 4).ToString();
+            }
+            catch (Exception)
+            {
+
+                Lb_TarTorque1.Text = "无结果";
+            }
+        }
+
+        private void Slt_MethodChange_SelectedIndexChanged(object sender, IntEventArgs e)
+        {
+            Lb_TarForce1_TextChanged(Lb_TarForce1, e);
+        }
+
+        private void Pan_DataCheckout_EnabledChanged(object sender, EventArgs e)
+        {
+            Lb_TarForce1_TextChanged(Lb_TarForce1, e);
         }
     }
 }

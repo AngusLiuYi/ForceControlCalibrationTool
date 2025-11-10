@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA1069: 不应复制枚举值
+dotnet_diagnostic.CA1069.severity = none

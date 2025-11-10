@@ -87,6 +87,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include=".editorconfig" />
     <None Include="bin\Debug\使用手册.docx" />
     <None Include="bin\Debug\使用手册.pdf" />
     <None Include="bin\Debug\大寰力控标定使用手册_v1.1.pdf" />

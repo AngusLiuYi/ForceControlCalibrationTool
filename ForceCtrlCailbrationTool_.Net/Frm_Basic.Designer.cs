@@ -34,9 +34,18 @@
             Tb_DataInput = new AntdUI.Table();
             Tb_Result = new AntdUI.Table();
             Pan_DataCheckout = new AntdUI.Panel();
+            panel2 = new Panel();
+            Lb_TarTorque1 = new AntdUI.Input();
+            label2 = new Label();
+            Lb_TarForce1 = new AntdUI.Input();
+            panel3 = new Panel();
+            Slt_MethodChange = new AntdUI.Select();
+            label1 = new Label();
             divider2 = new AntdUI.Divider();
             panel1.SuspendLayout();
             Pan_DataCheckout.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // pageHeader_FrmBasic
@@ -44,7 +53,7 @@
             pageHeader_FrmBasic.Dock = DockStyle.Top;
             pageHeader_FrmBasic.Font = new Font("Microsoft YaHei UI", 12F);
             pageHeader_FrmBasic.Location = new Point(0, 0);
-            pageHeader_FrmBasic.Margin = new Padding(4, 4, 4, 4);
+            pageHeader_FrmBasic.Margin = new Padding(4);
             pageHeader_FrmBasic.MaximizeBox = false;
             pageHeader_FrmBasic.Name = "pageHeader_FrmBasic";
             pageHeader_FrmBasic.Padding = new Padding(0, 0, 10, 0);
@@ -61,7 +70,7 @@
             panel1.Controls.Add(Tb_DataInput);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 42);
-            panel1.Margin = new Padding(4, 4, 4, 4);
+            panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
             panel1.Size = new Size(309, 661);
             panel1.TabIndex = 21;
@@ -71,7 +80,7 @@
             formsPlot1.DisplayScale = 1F;
             formsPlot1.Dock = DockStyle.Fill;
             formsPlot1.Location = new Point(0, 244);
-            formsPlot1.Margin = new Padding(4, 4, 4, 4);
+            formsPlot1.Margin = new Padding(4);
             formsPlot1.Name = "formsPlot1";
             formsPlot1.Size = new Size(309, 417);
             formsPlot1.TabIndex = 4;
@@ -89,7 +98,7 @@
             Tb_DataInput.EditSelection = AntdUI.TEditSelection.All;
             Tb_DataInput.Gap = 12;
             Tb_DataInput.Location = new Point(0, 0);
-            Tb_DataInput.Margin = new Padding(4, 4, 4, 4);
+            Tb_DataInput.Margin = new Padding(4);
             Tb_DataInput.Name = "Tb_DataInput";
             Tb_DataInput.Radius = 6;
             Tb_DataInput.Size = new Size(309, 244);
@@ -106,7 +115,7 @@
             Tb_Result.Dock = DockStyle.Top;
             Tb_Result.Gap = 12;
             Tb_Result.Location = new Point(309, 42);
-            Tb_Result.Margin = new Padding(4, 4, 4, 4);
+            Tb_Result.Margin = new Padding(4);
             Tb_Result.Name = "Tb_Result";
             Tb_Result.Radius = 6;
             Tb_Result.Size = new Size(681, 222);
@@ -115,10 +124,13 @@
             // Pan_DataCheckout
             // 
             Pan_DataCheckout.ArrowSize = 10;
+            Pan_DataCheckout.Controls.Add(panel2);
+            Pan_DataCheckout.Controls.Add(panel3);
             Pan_DataCheckout.Controls.Add(divider2);
             Pan_DataCheckout.Dock = DockStyle.Fill;
+            Pan_DataCheckout.Enabled = false;
             Pan_DataCheckout.Location = new Point(309, 264);
-            Pan_DataCheckout.Margin = new Padding(4, 4, 4, 4);
+            Pan_DataCheckout.Margin = new Padding(4);
             Pan_DataCheckout.Name = "Pan_DataCheckout";
             Pan_DataCheckout.Radius = 10;
             Pan_DataCheckout.Shadow = 24;
@@ -126,6 +138,103 @@
             Pan_DataCheckout.ShadowOpacityAnimation = true;
             Pan_DataCheckout.Size = new Size(681, 439);
             Pan_DataCheckout.TabIndex = 26;
+            Pan_DataCheckout.EnabledChanged += Pan_DataCheckout_EnabledChanged;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.Transparent;
+            panel2.Controls.Add(Lb_TarTorque1);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(Lb_TarForce1);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(30, 82);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(621, 49);
+            panel2.TabIndex = 13;
+            // 
+            // Lb_TarTorque1
+            // 
+            Lb_TarTorque1.Dock = DockStyle.Fill;
+            Lb_TarTorque1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_TarTorque1.JoinMode = AntdUI.TJoinMode.Right;
+            Lb_TarTorque1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_TarTorque1.Location = new Point(403, 0);
+            Lb_TarTorque1.Name = "Lb_TarTorque1";
+            Lb_TarTorque1.PlaceholderText = "无结果";
+            Lb_TarTorque1.PrefixText = "0x0000";
+            Lb_TarTorque1.ReadOnly = true;
+            Lb_TarTorque1.Size = new Size(218, 49);
+            Lb_TarTorque1.SuffixText = "‰";
+            Lb_TarTorque1.TabIndex = 13;
+            Lb_TarTorque1.TextAlign = HorizontalAlignment.Center;
+            // 
+            // label2
+            // 
+            label2.BackColor = Color.Transparent;
+            label2.Dock = DockStyle.Left;
+            label2.Font = new Font("Microsoft YaHei UI", 10F);
+            label2.Location = new Point(196, 0);
+            label2.Margin = new Padding(4, 3, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(207, 49);
+            label2.TabIndex = 12;
+            label2.Text = "则需要设置力控限制地址";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // Lb_TarForce1
+            // 
+            Lb_TarForce1.Dock = DockStyle.Left;
+            Lb_TarForce1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_TarForce1.JoinMode = AntdUI.TJoinMode.Left;
+            Lb_TarForce1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_TarForce1.Location = new Point(0, 0);
+            Lb_TarForce1.Name = "Lb_TarForce1";
+            Lb_TarForce1.PlaceholderText = "500";
+            Lb_TarForce1.PrefixText = "如果想要";
+            Lb_TarForce1.Size = new Size(196, 49);
+            Lb_TarForce1.SuffixText = "Unit";
+            Lb_TarForce1.TabIndex = 11;
+            Lb_TarForce1.TextAlign = HorizontalAlignment.Center;
+            Lb_TarForce1.TextChanged += Lb_TarForce1_TextChanged;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.Transparent;
+            panel3.Controls.Add(Slt_MethodChange);
+            panel3.Controls.Add(label1);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(30, 31);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(621, 51);
+            panel3.TabIndex = 12;
+            // 
+            // Slt_MethodChange
+            // 
+            Slt_MethodChange.AllowClear = true;
+            Slt_MethodChange.Dock = DockStyle.Right;
+            Slt_MethodChange.List = true;
+            Slt_MethodChange.LocalizationPlaceholderText = "Select.{id}";
+            Slt_MethodChange.Location = new Point(374, 0);
+            Slt_MethodChange.Margin = new Padding(4);
+            Slt_MethodChange.Name = "Slt_MethodChange";
+            Slt_MethodChange.PlaceholderText = "无文本";
+            Slt_MethodChange.Size = new Size(247, 51);
+            Slt_MethodChange.TabIndex = 18;
+            Slt_MethodChange.Text = "未选择算法";
+            Slt_MethodChange.SelectedIndexChanged += Slt_MethodChange_SelectedIndexChanged;
+            // 
+            // label1
+            // 
+            label1.BackColor = Color.Transparent;
+            label1.Dock = DockStyle.Left;
+            label1.Font = new Font("Microsoft YaHei UI", 16F);
+            label1.Location = new Point(0, 0);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(145, 51);
+            label1.TabIndex = 9;
+            label1.Text = "数据校验";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // divider2
             // 
@@ -147,13 +256,15 @@
             Controls.Add(Tb_Result);
             Controls.Add(panel1);
             Controls.Add(pageHeader_FrmBasic);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "Frm_Basic";
             Text = "Frm_Basic";
             Load += Frm_Basic_Load;
             Shown += Frm_Basic_Shown;
             panel1.ResumeLayout(false);
             Pan_DataCheckout.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -166,5 +277,12 @@
         private AntdUI.Table Tb_Result;
         private AntdUI.Panel Pan_DataCheckout;
         private AntdUI.Divider divider2;
+        private Label label1;
+        private Panel panel2;
+        private AntdUI.Input Lb_TarTorque1;
+        private Label label2;
+        private AntdUI.Input Lb_TarForce1;
+        private Panel panel3;
+        private AntdUI.Select Slt_MethodChange;
     }
 }

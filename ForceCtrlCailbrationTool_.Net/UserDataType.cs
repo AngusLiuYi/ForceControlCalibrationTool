@@ -28,10 +28,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             SAC_NP4_轴三 = 3,
             SAC_NP4_轴四 = 4,
             一体式电爪 = 5,
-            一体式电缸 = 6,
-            SAC_N_电缸 = 6,
-            SAC_S_电缸 = 6,
-            SAC_NF_电缸_闭环力控 = 6,
+            电缸100 = 5,
+            电缸1600 = 6,
         }
 
         /// <summary>
@@ -48,6 +46,27 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             电爪_PGIA = 2,
             电爪_PGHL_PGLS = 3,
         }
+
+        /// <summary>
+        /// 根据驱动器类型确认力控限制写入地址
+        /// </summary>
+        /// <param name="driveType">驱动器类型枚举</param>
+        /// <returns>地址（字符串类型，16进制）</returns>
+        public static string TorqueSettingAdr(DriveType driveType)
+        {
+            return (int)driveType switch
+            {
+                0 => "0x60E0",
+                1 => "0x5018",
+                2 => "0x5818",
+                3 => "0x7018",
+                4 => "0x7818",
+                5 => "0x101",
+                6 => "0x1604",
+                _ => "Error",
+            };
+        }
+
 
         public static List<object> GetNamesOfValue(Type enumType,int value)
         {
