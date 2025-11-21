@@ -45,7 +45,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <summary>
         /// config文件读取储存
         /// </summary>
-        private DataRow RowCfgBackup;
+        private Frm_Main.ConfigStruct CfgBackup;
 
 
         private void Frm_Basic_Load(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             pageHeader_FrmBasic.SubText += Application.ProductVersion[..8];
 
             //读取Config文件
-            RowCfgBackup = AngusTools.FileHelper.CfgHelper.CfgToDataTable(UserDataType.CfgFilePath).Rows[0];
+            CfgBackup = AngusTools.FileHelper.JsonHelper.GetJson<Frm_Main.ConfigStruct>(UserDataType.JsonFilePath);
 
             //标定数据录入表格-数值刷新
             //标定数据录入表格-显示空值
@@ -64,7 +64,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             DtCailbration.Columns.Add("实际压力", typeof(double));
             DtCailbration.Rows.Add(1, 0, 0);
             //
-            if (RowCfgBackup["EnableCailCurrent"].ToString() == "True")
+            if (CfgBackup.EnableCailCurrent == "True")
             {
                 _EnableCailCurrent = true;
                 DtCailbration.Columns.Add("反馈电流", typeof(double));
@@ -86,11 +86,11 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //校验数据功能-单位刷新
             //-如果需要n-unit的实际压力，则应该给add写入n值
             //--实际压力单位为用户单位
-            Lb_TarForce1.SuffixText = RowCfgBackup["ForceUnit"].ToString();
+            Lb_TarForce1.SuffixText = CfgBackup.ForceUnit;
             //--应设力矩限制的地址：根据驱动器类型确认
-            Lb_TarTorque1.PrefixText = UserDataType.TorqueSettingAdr(Enum.Parse<UserDataType.DriveType>(RowCfgBackup["DriveType"].ToString() ?? "SAC_NP2_轴一"));
+            Lb_TarTorque1.PrefixText = UserDataType.TorqueSettingAdr(Enum.Parse<UserDataType.DriveType>(CfgBackup.DriveType ?? "SAC_NP2_轴一"));
             //--应设力矩限制的单位
-            Lb_TarTorque1.SuffixText = RowCfgBackup["TorqueUnit"].ToString();
+            Lb_TarTorque1.SuffixText = CfgBackup.TorqueUnit;
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //带电流反馈与不带电流反馈的也要区分，防止标定数据异常
             string[] strs;
             if (_EnableCailCurrent)
-                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + "_C.csv");
-            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + ".csv");
+                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + "_C.csv");
+            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + ".csv");
 
             //如果不存在备份文件，表单显示空表头
             if (strs.Length <= 0) return;
@@ -295,7 +295,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 {
                     case "加载":
                         //搜索data文件夹内是否存在标定数据备份
-                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + RowCfgBackup["DriveType"] + ".csv");
+                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + ".csv");
                         if (strs.Length <= 0)
                         {
                             AntdUI.Modal.open(this,
@@ -312,7 +312,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         //数据校验完毕后保存数据
                         if (DataCheckout(DtCailbration))
                         {
-                            Frm_SaveFile frm_SaveFile = new(RowCfgBackup["DriveType"].ToString() ?? "null", _EnableCailCurrent);
+                            Frm_SaveFile frm_SaveFile = new(CfgBackup.DriveType ?? "null", _EnableCailCurrent);
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
                                 AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
                             frm_SaveFile.Dispose();
