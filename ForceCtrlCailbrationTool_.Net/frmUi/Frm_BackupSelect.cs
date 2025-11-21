@@ -17,7 +17,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
         /// 弹出界面，选择需要的数据项
         /// </summary>
         /// <param name="filePathNames">文件的名称组</param>
-        public Frm_BackupSelect(string[] filePathNames)
+        public Frm_BackupSelect(List<string> filePathNames)
         {
             InitializeComponent();
             _FilePathNames = filePathNames;
@@ -27,7 +27,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
         /// <summary>
         /// 文件名称组
         /// </summary>
-        private readonly string[] _FilePathNames;
+        private readonly List<string> _FilePathNames;
 
         /// <summary>
         /// 选择的项值
@@ -36,20 +36,20 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
 
         private void Frm_BackupSelect_Load(object sender, EventArgs e)
         {
-            string[] fileNames = new string[_FilePathNames.Length];
-            for (int i = 0; i < _FilePathNames.Length; i++)
-            {
-                fileNames[i] = Path.GetFileNameWithoutExtension(_FilePathNames[i]);
-            }
+            //List<string> fileNames = new string[_FilePathNames.Length];
+            //for (int i = 0; i < _FilePathNames.Length; i++)
+            //{
+            //    fileNames[i] = Path.GetFileNameWithoutExtension(_FilePathNames[i]);
+            //}
             Pan_main.Controls.Clear();
-            for (int i = 0; i < _FilePathNames.Length; i++)
+            for (int i = 0; i < _FilePathNames.Count; i++)
             {
                 Pan_main.Controls.Add(new AntdUI.Radio()
                 {
                     AutoSize = true,
                     BackColor = Color.Transparent,
                     Tag = i,
-                    Text = fileNames[i]
+                    Text = _FilePathNames[i]
                 });
                 Pan_main.Controls[i].Location = new Point(30 + 300 * (i / 5), 30 + 50 * (i % 5));
                 Pan_main.Controls[i].DoubleClick += Radios_DoubleClick;

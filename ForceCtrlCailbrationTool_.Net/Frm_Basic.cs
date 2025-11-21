@@ -45,7 +45,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <summary>
         /// config文件读取储存
         /// </summary>
-        private Frm_Main.ConfigStruct CfgBackup;
+        private UserDataType.ConfigStruct CfgBackup;
 
 
         private void Frm_Basic_Load(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             pageHeader_FrmBasic.SubText += Application.ProductVersion[..8];
 
             //读取Config文件
-            CfgBackup = AngusTools.FileHelper.JsonHelper.GetJson<Frm_Main.ConfigStruct>(UserDataType.JsonFilePath);
+            CfgBackup = AngusTools.FileHelper.JsonHelper.GetJson<UserDataType.ConfigStruct>(UserDataType.CfgJsonFilePath);
 
             //标定数据录入表格-数值刷新
             //标定数据录入表格-显示空值
@@ -101,28 +101,59 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         private void Frm_Basic_Shown(object sender, EventArgs e)
         {
             //非引导模式下搜索data文件夹内是否存在标定数据备份
-            //带电流反馈与不带电流反馈的也要区分，防止标定数据异常
-            string[] strs;
-            if (_EnableCailCurrent)
-                strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + "_C.csv");
-            else strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + ".csv");
-
-            //如果不存在备份文件，表单显示空表头
-            if (strs.Length <= 0) return;
+            if(!FindBackupFile(out var findedFileNames)) return;
 
             //弹出询问是否加载备份
             DialogResult res = AntdUI.Modal.open(this,
                                     "存在数据备份",
                                     "检测到本地存在标定数据备份，是否加载？");
-            if (res == DialogResult.OK) LoadBackupFile(strs);
+
+            if (res == DialogResult.OK) LoadBackupFile(findedFileNames);
+
+            //数据录入表格默认选择第0行
             Tb_DataInput.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// 检索data文件夹下有没有可用备份
+        /// </summary>
+        /// <param name="existedFileNames">如果有，输出搜索到的可用备份名字</param>
+        /// <returns></returns>
+        private bool FindBackupFile(out List<string> existedFileNames)
+        {
+            List<UserDataType.BackupFileStruct> backupConfig = AngusTools.FileHelper.JsonHelper.GetJson<List<UserDataType.BackupFileStruct>>(UserDataType.BackupNameFilePath);
+            List<UserDataType.BackupFileStruct> notExistFile = [];
+            existedFileNames = [];
+
+            //遍历文件名
+            //如果文件配置与启动配置相同，将文件名添加进预选
+            //如果文件配置存在但实际不存在，删除此配置，避免数据超量
+            foreach (var backup in backupConfig)
+            {
+                if (backup.FileConfig.Equals(CfgBackup))
+                {
+                    if (File.Exists(UserDataType.CsvFilePath + backup.FileName + ".csv"))
+                        existedFileNames.Add(backup.FileName);
+                    else notExistFile.Add(backup);
+                }
+            }
+            if (notExistFile.Count > 0)
+            {
+                foreach (var item in notExistFile)
+                {
+                    backupConfig.Remove(item);
+                }
+                AngusTools.FileHelper.JsonHelper.SaveToJson(UserDataType.BackupNameFilePath, backupConfig);
+            }
+            if (existedFileNames.Count > 0) return true;
+            return false;
         }
 
         /// <summary>
         /// 传入待选文件路径列表，在弹窗中供用户选择
         /// </summary>
         /// <param name="fileNames">待选文件路径列表</param>
-        private void LoadBackupFile(string[] fileNames)
+        private void LoadBackupFile(List<string> fileNames)
         {
             //创建文件选择窗口
             Frm_BackupSelect frm_BackupSelect = new(fileNames);
@@ -133,7 +164,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }
 
             //接收用户选择的备份文件，展示到表格中
-            DtCailbration = AngusTools.FileHelper.CsvHelper.CsvToDataTable(fileNames[frm_BackupSelect.SelectedFilesValue]);
+            var path = UserDataType.CsvFilePath + fileNames[frm_BackupSelect.SelectedFilesValue] + ".csv";
+            DtCailbration = AngusTools.FileHelper.CsvHelper.CsvToDataTable(path);
             frm_BackupSelect.Dispose();
             if (!DataCheckout(DtCailbration)) return;
 
@@ -295,8 +327,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 {
                     case "加载":
                         //搜索data文件夹内是否存在标定数据备份
-                        string[] strs = Directory.GetFiles(UserDataType.CsvFilePath, "*" + CfgBackup.DriveType + ".csv");
-                        if (strs.Length <= 0)
+                        if (!FindBackupFile(out var findedFileNames))
                         {
                             AntdUI.Modal.open(this,
                                     "未检测到备份文件",
@@ -304,7 +335,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                             return;
                         }
                         //加载备份文件
-                        LoadBackupFile(strs);
+                        LoadBackupFile(findedFileNames);
                         break;
 
                     case "保存":

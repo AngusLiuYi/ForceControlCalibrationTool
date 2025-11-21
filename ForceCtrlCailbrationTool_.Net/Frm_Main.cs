@@ -42,11 +42,11 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             pageHeader_FrmMain.SubText = Application.ProductVersion[..8];
 
             //读取存放的config文件，获取基本设置。
-            ConfigStruct config = new();
+            UserDataType.ConfigStruct config = new();
             bool isHaveCfg = false;
-            if (File.Exists(UserDataType.JsonFilePath))
+            if (File.Exists(UserDataType.CfgJsonFilePath))
             {
-                config = AngusTools.FileHelper.JsonHelper.GetJson<ConfigStruct>(UserDataType.JsonFilePath);
+                config = AngusTools.FileHelper.JsonHelper.GetJson<UserDataType.ConfigStruct>(UserDataType.CfgJsonFilePath);
                 //如果成功读取到存档，则置位isHaveCfg
                 isHaveCfg = true;
             }
@@ -125,7 +125,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 strCurrentUnit = Slt_CurrentUnit.SelectedValue as string;
             }
 
-            ConfigStruct jsonData = new()
+            UserDataType.ConfigStruct jsonData = new()
             {
                 DriveType = Slt_DriveType.SelectedValue.ToString(),
                 ServoType= Slt_ServoType.SelectedValue.ToString(),
@@ -134,38 +134,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 EnableCailCurrent= strEnableCailCurrent,
                 CurrentUnit= strCurrentUnit
             };
-            AngusTools.FileHelper.JsonHelper.SaveToJson(UserDataType.JsonFilePath, jsonData);     
-        }
-
-        /// <summary>
-        /// 基本设置配置
-        /// </summary>
-        public struct ConfigStruct
-        {
-            /// <summary>
-            /// 驱动器类型
-            /// </summary>
-            public string DriveType { get; set; }
-            /// <summary>
-            /// 电机类型
-            /// </summary>
-            public string ServoType { get; set; }
-            /// <summary>
-            /// 力矩限制单位
-            /// </summary>
-            public string TorqueUnit { get; set; }
-            /// <summary>
-            /// 实际压力单位
-            /// </summary>
-            public string ForceUnit { get; set; }
-            /// <summary>
-            /// 使能电流反馈标定
-            /// </summary>
-            public string EnableCailCurrent { get; set; }
-            /// <summary>
-            /// 电流反馈单位
-            /// </summary>
-            public string CurrentUnit { get; set; }
+            AngusTools.FileHelper.JsonHelper.SaveToJson(UserDataType.CfgJsonFilePath, jsonData);     
         }
     }
 

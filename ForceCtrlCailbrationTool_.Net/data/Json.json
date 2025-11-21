@@ -1,8 +1,0 @@
-﻿{
-  "driveType": "SAC_NP2_\u8F74\u4E00",
-  "servoType": "\u76F4\u9A71_Dla_Dlar",
-  "torqueUnit": "\u5343\u5206\u6BD4",
-  "forceUnit": "g",
-  "enableCailCurrent": "False",
-  "currentUnit": "null"
-}

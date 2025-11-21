@@ -12,8 +12,13 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// config.json文件存放路径地址
         /// 完整显示：相对路径+文件名+类型后缀
         /// </summary>
-        public static readonly string JsonFilePath = @"..\..\..\Data\Config.json";
+        public static readonly string CfgJsonFilePath = @"..\..\..\Data\Config.json";
 
+        /// <summary>
+        /// 备份名称集合的路径地址
+        /// 完整显示：相对路径+文件名+类型后缀
+        /// </summary>
+        public static readonly string BackupNameFilePath = @"..\..\..\Data\BackupName.json";
 
         /// <summary>
         /// 标定数据备份路径地址
@@ -74,7 +79,51 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             };
         }
 
+        /// <summary>
+        /// 基本设置配置
+        /// </summary>
+        public struct ConfigStruct
+        {
+            /// <summary>
+            /// 驱动器类型
+            /// </summary>
+            public string DriveType { get; set; }
+            /// <summary>
+            /// 电机类型
+            /// </summary>
+            public string ServoType { get; set; }
+            /// <summary>
+            /// 力矩限制单位
+            /// </summary>
+            public string TorqueUnit { get; set; }
+            /// <summary>
+            /// 实际压力单位
+            /// </summary>
+            public string ForceUnit { get; set; }
+            /// <summary>
+            /// 使能电流反馈标定
+            /// </summary>
+            public string EnableCailCurrent { get; set; }
+            /// <summary>
+            /// 电流反馈单位
+            /// </summary>
+            public string CurrentUnit { get; set; }
+        }
 
+        /// <summary>
+        /// 备份文件配置
+        /// </summary>
+        public struct BackupFileStruct
+        {
+            /// <summary>
+            /// 存档文件名称
+            /// </summary>
+            public string FileName { get; set; }
+            /// <summary>
+            /// 存档的文件配置
+            /// </summary>
+            public ConfigStruct FileConfig { get; set; }
+        }
         public static List<object> GetNamesOfValue(Type enumType,int value)
         {
             List<object> listStr = [];
