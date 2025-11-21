@@ -93,6 +93,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             Lb_TarTorque1.SuffixText = CfgBackup.TorqueUnit;
         }
 
+        #region 备份文件加载与保存
         /// <summary>
         /// 窗体首次显示时检测备份文件
         /// </summary>
@@ -175,6 +176,33 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //刷新图表
             ChartRefresh(true, _EnableCailCurrent);
         }
+
+        /// <summary>
+        /// 保存备份文件
+        /// </summary>
+        /// <param name="fileName"></param>
+        private void SaveBackupFile(string fileName)
+        {
+            //写入csv文件
+            AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + fileName);
+
+            //创建结构体变量
+            UserDataType.BackupFileStruct bf = new()
+            {
+                FileName = Path.GetFileNameWithoutExtension(fileName),
+                FileConfig = CfgBackup
+            };
+            
+            //读取备份配置列表，如果已存在相同条目直接跳过，否则新增条目
+            List<UserDataType.BackupFileStruct> listBf = AngusTools.FileHelper.JsonHelper.GetJson<List<UserDataType.BackupFileStruct>>(UserDataType.BackupNameFilePath);
+            foreach (var backup in listBf)
+            {
+                if (backup.Equals(bf))
+                    return;
+            }
+            AngusTools.FileHelper.JsonHelper.AppendToJson(UserDataType.BackupNameFilePath,bf);
+        }
+        #endregion
 
 
         private void ChartRefresh(bool refreshLine, bool isCurrent)
@@ -272,8 +300,9 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
 
         /// <summary>
         /// 对数据升序排序并更新序号
+        /// 排序项：力矩显示升序
         /// </summary>
-        private void DataTableSort()
+        private void DtCailbrationSort()
         {
             //根据力矩控制列进行排序
             DtCailbration.DefaultView.Sort = "力矩限制 ASC";
@@ -287,11 +316,17 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             Tb_DataInput.DataSource = DtCailbration;
         }
 
+        /// <summary>
+        /// 表格右键功能实现
+        /// 刷新、增加、减少、加载、保存、拟合
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
         {
             //鼠标在数据录入表格上按下鼠标右键后创建右键菜单
-            if (e.Button != MouseButtons.Right)
-                return;
+            if (e.Button != MouseButtons.Right) return;
+
             IContextMenuStripItem[] menuStripItems =
             [
                 new AntdUI.ContextMenuStripItem("刷新","对数据进行排序").SetIcon("ReloadOutlined"),
@@ -302,7 +337,6 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 new AntdUI.ContextMenuStripItem("保存","保存数据到备份").SetIcon("SaveOutlined"),
                 new AntdUI.ContextMenuStripItemDivider(),
                 new AntdUI.ContextMenuStripItem("拟合","计算拟合结果").SetIcon("FunctionOutlined"),
-
             ];
 
             //委托右键菜单的实现
@@ -311,7 +345,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 switch (e.Text)
                 {
                     case "刷新":
-                        DataTableSort();
+                        DtCailbrationSort();
                         break;
                     case "增加":
                         //向末尾增加一行数据，补充默认值
@@ -339,18 +373,18 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         break;
 
                     case "保存":
-                        DataTableSort();
+                        DtCailbrationSort();
                         //数据校验完毕后保存数据
                         if (DataCheckout(DtCailbration))
                         {
-                            Frm_SaveFile frm_SaveFile = new(CfgBackup.DriveType ?? "null", _EnableCailCurrent);
+                            Frm_SaveFile frm_SaveFile = new();
                             if (frm_SaveFile.ShowDialog() == DialogResult.OK)
-                                AngusTools.FileHelper.CsvHelper.DataTableToCsv(DtCailbration, UserDataType.CsvFilePath + frm_SaveFile.FileName);
+                                SaveBackupFile(frm_SaveFile.FileName);
                             frm_SaveFile.Dispose();
                         }
                         break;
                     case "拟合":
-                        DataTableSort();
+                        DtCailbrationSort();
                         if (DataCheckout(DtCailbration))
                             ChartRefresh(true, _EnableCailCurrent);
                         break;

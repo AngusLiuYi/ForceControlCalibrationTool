@@ -12,19 +12,21 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_.frmUi
 {
     public partial class Frm_SaveFile : AntdUI.Window
     {
-        public Frm_SaveFile(string driveType,bool EnableCailCurrent)
+        public Frm_SaveFile()
         {
             InitializeComponent();
-            if (EnableCailCurrent)
-                FileNameInput.SuffixText = "_" + driveType + "_C.csv";
-            else FileNameInput.SuffixText = "_" + driveType + ".csv";
         }
 
         public string FileName;
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+
             //连接文件路径
-            string _fileName = FileNameInput.Text + FileNameInput.SuffixText;
+            string _fileName;
+            if (string.IsNullOrEmpty(FileNameInput.Text))
+                _fileName = FileNameInput.PlaceholderText + FileNameInput.SuffixText;
+            else _fileName = FileNameInput.Text + FileNameInput.SuffixText;
+
             //如果当前文件下存在同名备份，提示用户是否覆盖
             if (File.Exists(UserDataType.CsvFilePath + _fileName))
             {

@@ -1,6 +1,6 @@
 ﻿[
   {
-    "fileName": "1",
+    "fileName": "\u7EC4\u88C5\u673A_\u53D6\u6599Z1",
     "fileConfig": {
       "driveType": "SAC_NP2_\u8F74\u4E00",
       "servoType": "\u76F4\u9A71_Dla_Dlar",
@@ -11,7 +11,7 @@
     }
   },
   {
-    "fileName": "2",
+    "fileName": "\u53D6\u6599Z2",
     "fileConfig": {
       "driveType": "SAC_NP2_\u8F74\u4E00",
       "servoType": "\u76F4\u9A71_Dla_Dlar",
