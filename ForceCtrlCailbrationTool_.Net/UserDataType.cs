@@ -9,6 +9,13 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         public static readonly string CfgFilePath = @"..\..\..\Data\Config.config";
 
         /// <summary>
+        /// config.json文件存放路径地址
+        /// 完整显示：相对路径+文件名+类型后缀
+        /// </summary>
+        public static readonly string JsonFilePath = @"..\..\..\Data\Config.json";
+
+
+        /// <summary>
         /// 标定数据备份路径地址
         /// 完整显示：相对路径
         /// </summary>

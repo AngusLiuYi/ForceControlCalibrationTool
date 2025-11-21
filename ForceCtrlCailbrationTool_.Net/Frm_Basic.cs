@@ -56,8 +56,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //读取Config文件
             RowCfgBackup = AngusTools.FileHelper.CfgHelper.CfgToDataTable(UserDataType.CfgFilePath).Rows[0];
 
-            //标定数据录入表格数值刷新
-            //标定数据录入表格显示空值
+            //标定数据录入表格-数值刷新
+            //标定数据录入表格-显示空值
             DtCailbration = new();
             DtCailbration.Columns.Add("序号", typeof(double));
             DtCailbration.Columns.Add("力矩限制", typeof(double));
@@ -72,7 +72,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }
             Tb_DataInput.DataSource = DtCailbration;
 
-            //拟合结果表格数值刷新
+            //拟合结果表格-数值刷新
             //存入表格，显示控制
             DtResult = new();
             DtResult.Columns.Add("算法", typeof(string));
@@ -83,7 +83,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             DtResult.Rows.Add("null", "null", 0, 0, 0);
             Tb_Result.DataSource = DtResult;
 
-            //校验数据表格单位刷新
+            //校验数据功能-单位刷新
             //-如果需要n-unit的实际压力，则应该给add写入n值
             //--实际压力单位为用户单位
             Lb_TarForce1.SuffixText = RowCfgBackup["ForceUnit"].ToString();
@@ -333,6 +333,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
 
         private void Lb_TarForce1_TextChanged(object sender, EventArgs e)
         {
+            //TODO-JUST 反向换算是不是应该放到FittingData类？
             if (Slt_MethodChange.SelectedValue == null)
                 return;
             try
