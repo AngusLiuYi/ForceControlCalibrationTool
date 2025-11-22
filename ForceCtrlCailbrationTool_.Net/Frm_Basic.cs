@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using ForceCtrlCailbrationTool_.Net_x._0_.frmUi;
 using ScottPlot.MultiplotLayouts;
 using ScottPlot.WinForms;
+using ScottPlot.Plottables;
 
 namespace ForceCtrlCailbrationTool_.Net_x._0_
 {
@@ -52,7 +53,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// </summary>
         private UserDataType.ConfigStruct CfgBackup;
 
-
+        private Dictionary<string, Scatter> Scatters;
 
         /// <summary>
         /// 初始加载界面时对显示做初值
@@ -83,6 +84,16 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }
             Tb_DataInput.DataSource = DtCailbration;
 
+            ////数据图表初始化
+            //var points = formsPlot1.Plot.Add.ScatterPoints(new double[] { 0 }, new double[] { 0 });
+            //points.Color = ScottPlot.Color.FromColor(Color.Red);
+            //points.MarkerShape = ScottPlot.MarkerShape.FilledSquare;
+
+            //var line1 = formsPlot1.Plot.Add.ScatterLine(new double[] { 0 }, new double[] { 0 });
+            //line1.Color = ScottPlot.Color.FromColor(Color.Black);
+            //line1.LegendText=
+            //Scatters.Add("Points", points);
+
             //拟合结果表格-数值刷新
             //存入表格，显示控制
             DtResult = new();
@@ -105,6 +116,52 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         }
 
         #endregion
+
+        /// <summary>
+        /// 表格右键功能实现
+        /// 刷新、增加、减少、加载、保存、拟合
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
+        {
+            //鼠标在数据录入表格上按下鼠标右键后创建右键菜单
+            if (e.Button != MouseButtons.Right) return;
+
+            IContextMenuStripItem[] menuStripItems =
+            [
+                new AntdUI.ContextMenuStripItem("刷新","对数据进行排序").SetIcon("ReloadOutlined"),
+                new AntdUI.ContextMenuStripItem("增加","增加一行数据到最下方").SetIcon("DiffOutlined"),
+                new AntdUI.ContextMenuStripItem("删除","删除本行数据").SetIcon("DeleteOutlined"),
+                new AntdUI.ContextMenuStripItemDivider(),
+                new AntdUI.ContextMenuStripItem("加载","加载历史数据").SetIcon("FolderOpenOutlined"),
+                new AntdUI.ContextMenuStripItem("保存","保存数据到备份").SetIcon("SaveOutlined"),
+                new AntdUI.ContextMenuStripItemDivider(),
+                new AntdUI.ContextMenuStripItem("拟合","计算拟合结果").SetIcon("FunctionOutlined"),
+            ];
+
+            //委托右键菜单的实现
+            AntdUI.ContextMenuStrip.open(this, e =>
+            {
+                switch (e.Text)
+                {
+                    case "刷新":
+                    case "增加":
+                    case "删除":
+                        DtCailbrationEdit(e);
+                        break;
+                    case "加载":
+                    case "保存":
+                        BackupFileCtrl(e);
+                        break;
+                    case "拟合":
+                        TbCailbrationRefresh();
+                        if (DataCheckout(DtCailbration))
+                            ChartRefresh(true);
+                        break;
+                }
+            }, menuStripItems);
+        }
 
         #region 备份文件加载与保存
         /// <summary>
@@ -215,6 +272,42 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }
             AngusTools.FileHelper.JsonHelper.AppendToJson(UserDataType.BackupNameFilePath,bf);
         }
+
+        /// <summary>
+        /// 右键菜单对备份文件操作
+        /// </summary>
+        /// <param name="item"></param>
+        private void BackupFileCtrl(ContextMenuStripItem item)
+        {
+            switch (item.Text)
+            {
+                case "加载":
+                    //搜索data文件夹内是否存在标定数据备份
+                    if (!FindBackupFile(out var findedFileNames))
+                    {
+                        AntdUI.Modal.open(this,
+                                "未检测到备份文件",
+                                "根据当前选定的驱动器，未在指定文件夹下检测到备份文件。");
+                        return;
+                    }
+                    //加载备份文件
+                    LoadBackupFile(findedFileNames);
+                    break;
+
+                case "保存":
+                    TbCailbrationRefresh();
+                    //数据校验完毕后保存数据
+                    if (DataCheckout(DtCailbration))
+                    {
+                        Frm_SaveFile frm_SaveFile = new();
+                        if (frm_SaveFile.ShowDialog() == DialogResult.OK)
+                            SaveBackupFile(frm_SaveFile.FileName);
+                        frm_SaveFile.Dispose();
+                    }
+                    break;
+            }
+        }
+
         #endregion
 
         #region 图表内容刷新
@@ -236,16 +329,14 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             Tb_DataInput.DataSource = DtCailbration;
         }
 
-
         /// <summary>
         /// 数据图表内容刷新
         /// </summary>
         /// <param name="refreshLine"></param>
         /// <param name="isCurrent"></param>
-        private void ChartRefresh(bool refreshLine, bool isCurrent)
+        private void ChartRefresh(bool refreshLine)
         {
             //图表绑定数据需要list格式，需要进行转换
-            //数据展示点位图
             List<double> listForce = [];
             List<double> listTorque = [];
             List<double> listCurrent = [];
@@ -253,22 +344,31 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             {
                 listForce.Add(Convert.ToDouble(row["实际压力"]));
                 listTorque.Add(Convert.ToDouble(row["力矩限制"]));
-                if (isCurrent) listCurrent.Add(Convert.ToDouble(row["反馈电流"]));
+                if (_EnableCailCurrent) listCurrent.Add(Convert.ToDouble(row["反馈电流"]));
             }
 
             //清除图表当前内容，增加点位图
             //TODO 同步显示电流与力的点位图实现
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.Add.ScatterPoints(listTorque, listForce);
-            if (isCurrent) formsPlot1.Plot.Add.ScatterPoints(listCurrent, listForce);
+            if (_EnableCailCurrent) formsPlot1.Plot.Add.ScatterPoints(listCurrent, listForce);
 
             //需要拟合时，计算结果并输出线图
             if (refreshLine)
             {
                 DtResult.Rows.Clear();
                 Slt_MethodChange.Items.Clear();
-                Pan_DataCheckout.Enabled = true;
-                if (isCurrent)
+                foreach (var fit in FittingData.ListFittingMethod)
+                {
+                    fit(listTorque, listForce, out ResultStruct result);
+                    double[] arrTorque = [listTorque[0], listTorque.Last()];
+                    double[] arrForce = [listTorque[0] * result.Slope + result.Intercept, listTorque.Last() * result.Slope + result.Intercept];
+                    formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
+                    TbResultRefresh(false, result);
+                    Slt_MethodChange.Items.Add(result.FuncName + ':' + DtResult.Rows.Count);
+                }
+
+                if (_EnableCailCurrent)
                 {
                     foreach (var fit in FittingData.ListFittingMethod)
                     {
@@ -279,23 +379,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         TbResultRefresh(true, result);
                     }
                 }
-                else
-                {
-                    foreach (var fit in FittingData.ListFittingMethod)
-                    {
-                        fit(listTorque, listForce, out ResultStruct result);
-                        double[] arrTorque = [listTorque[0], listTorque.Last()];
-                        double[] arrForce = [listTorque[0] * result.Slope + result.Intercept, listTorque.Last() * result.Slope + result.Intercept];
-                        formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
-                        TbResultRefresh(false,result);
-                        Slt_MethodChange.Items.Add(result.FuncName + ':' + DtResult.Rows.Count);
-                    }
-                }
-            }
-            else
-            {
-                //Slt_MethodChange.Items.Clear();
-                Pan_DataCheckout.Enabled = false;
+
+                Pan_DataCheckout.Enabled = true;
             }
 
             //缩放图表达到居中效果
@@ -344,89 +429,47 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         }
 
         /// <summary>
-        /// 表格右键功能实现
-        /// 刷新、增加、减少、加载、保存、拟合
+        /// 标定数据修改
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tb_DataInput_MouseDown(object sender, MouseEventArgs e)
+        /// <param name="item"></param>
+        private void DtCailbrationEdit(ContextMenuStripItem item)
         {
-            //鼠标在数据录入表格上按下鼠标右键后创建右键菜单
-            if (e.Button != MouseButtons.Right) return;
-
-            IContextMenuStripItem[] menuStripItems =
-            [
-                new AntdUI.ContextMenuStripItem("刷新","对数据进行排序").SetIcon("ReloadOutlined"),
-                new AntdUI.ContextMenuStripItem("增加","增加一行数据到最下方").SetIcon("DiffOutlined"),
-                new AntdUI.ContextMenuStripItem("删除","删除本行数据").SetIcon("DeleteOutlined"),
-                new AntdUI.ContextMenuStripItemDivider(),
-                new AntdUI.ContextMenuStripItem("加载","加载历史数据").SetIcon("FolderOpenOutlined"),
-                new AntdUI.ContextMenuStripItem("保存","保存数据到备份").SetIcon("SaveOutlined"),
-                new AntdUI.ContextMenuStripItemDivider(),
-                new AntdUI.ContextMenuStripItem("拟合","计算拟合结果").SetIcon("FunctionOutlined"),
-            ];
-
-            //委托右键菜单的实现
-            AntdUI.ContextMenuStrip.open(this, e =>
+            switch (item.Text)
             {
-                switch (e.Text)
-                {
-                    case "刷新":
-                        TbCailbrationRefresh();
-                        break;
-                    case "增加":
-                        //向末尾增加一行数据，补充默认值
-                        DtCailbration.Rows.Add(DtCailbration.Rows.Count + 1, 0, 0);
-                        if (_EnableCailCurrent) DtCailbration.Rows[^1]["反馈电流"] = 0;
-                        break;
-                    case "删除":
-                        //删除指定行的数据
-                        DtCailbration.Rows.RemoveAt(Tb_DataInput.SelectedIndex - 1);
-                        break;
-                }
-                switch (e.Text)
-                {
-                    case "加载":
-                        //搜索data文件夹内是否存在标定数据备份
-                        if (!FindBackupFile(out var findedFileNames))
-                        {
-                            AntdUI.Modal.open(this,
-                                    "未检测到备份文件",
-                                    "根据当前选定的驱动器，未在指定文件夹下检测到备份文件。");
-                            return;
-                        }
-                        //加载备份文件
-                        LoadBackupFile(findedFileNames);
-                        break;
+                case "刷新":
+                    //以力矩限制为基升序排序
+                    TbCailbrationRefresh();
+                    break;
+                case "增加":
+                    //向末尾增加一行数据，补充默认值
+                    DtCailbration.Rows.Add(DtCailbration.Rows.Count + 1, 0, 0);
+                    if (_EnableCailCurrent) DtCailbration.Rows[^1]["反馈电流"] = 0;
+                    break;
+                case "删除":
+                    //删除指定行的数据
+                    DtCailbration.Rows.RemoveAt(Tb_DataInput.SelectedIndex - 1);
+                    break;
+            }
+            Tb_DataInput.DataSource = DtCailbration;
 
-                    case "保存":
-                        TbCailbrationRefresh();
-                        //数据校验完毕后保存数据
-                        if (DataCheckout(DtCailbration))
-                        {
-                            Frm_SaveFile frm_SaveFile = new();
-                            if (frm_SaveFile.ShowDialog() == DialogResult.OK)
-                                SaveBackupFile(frm_SaveFile.FileName);
-                            frm_SaveFile.Dispose();
-                        }
-                        break;
-                    case "拟合":
-                        TbCailbrationRefresh();
-                        if (DataCheckout(DtCailbration))
-                            ChartRefresh(true, _EnableCailCurrent);
-                        break;
-                    default:
-                        Tb_DataInput.DataSource = DtCailbration;
-                        ChartRefresh(false, false);
-                        break;
-                }
-            }, menuStripItems);
+            //改动标定数据后原拟合参数已不可用，需要重构
+            //删除图表内容
+            ChartRefresh(false);
+
+            //清除结果显示表格
+            DtResult.Rows.Clear();
+            DtResult.Rows.Add("null", "null", 0, 0, 0);
+            Tb_Result.DataSource = DtResult;
+
+            //失能数据校验功能
+            Slt_MethodChange.Items.Clear();
+            Slt_MethodChange.SelectedIndex = -1;
+            Pan_DataCheckout.Enabled = false;
         }
 
         #region 数据校验窗口逻辑
         private void Lb_TarForce1_TextChanged(object sender, EventArgs e)
         {
-            //TODO-JUST 反向换算是不是应该放到FittingData类？
             if (Slt_MethodChange.SelectedValue == null)
                 return;
             try
