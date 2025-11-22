@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ForceCtrlCailbrationTool_.Net_x._0_.frmUi;
 using ScottPlot.MultiplotLayouts;
+using ScottPlot.WinForms;
 
 namespace ForceCtrlCailbrationTool_.Net_x._0_
 {
@@ -25,11 +26,15 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             _IsEnableGuide = isEnableGuide;
         }
 
+        #region 本地变量生成及初始化
         /// <summary>
         /// 是否载入引导界面
         /// </summary>
         private readonly int _IsEnableGuide;
 
+        /// <summary>
+        /// 使能电流反馈标定
+        /// </summary>
         private bool _EnableCailCurrent = false;
 
         /// <summary>
@@ -48,6 +53,12 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         private UserDataType.ConfigStruct CfgBackup;
 
 
+
+        /// <summary>
+        /// 初始加载界面时对显示做初值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Frm_Basic_Load(object sender, EventArgs e)
         {
             //当前版本显示在工具栏
@@ -92,6 +103,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //--应设力矩限制的单位
             Lb_TarTorque1.SuffixText = CfgBackup.TorqueUnit;
         }
+
+        #endregion
 
         #region 备份文件加载与保存
         /// <summary>
@@ -204,7 +217,31 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         }
         #endregion
 
+        #region 图表内容刷新
+        /// <summary>
+        /// "标定源数据"排序并刷新
+        /// 排序项：力矩显示升序
+        /// </summary>
+        private void TbCailbrationRefresh()
+        {
+            //根据力矩控制列进行排序
+            DtCailbration.DefaultView.Sort = "力矩限制 ASC";
+            DtCailbration = DtCailbration.DefaultView.ToTable();
+            //更新序号
+            for (int i = 0; i < DtCailbration.Rows.Count; i++)
+            {
+                DtCailbration.Rows[i][0] = i + 1;
+            }
 
+            Tb_DataInput.DataSource = DtCailbration;
+        }
+
+
+        /// <summary>
+        /// 数据图表内容刷新
+        /// </summary>
+        /// <param name="refreshLine"></param>
+        /// <param name="isCurrent"></param>
         private void ChartRefresh(bool refreshLine, bool isCurrent)
         {
             //图表绑定数据需要list格式，需要进行转换
@@ -235,23 +272,23 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 {
                     foreach (var fit in FittingData.ListFittingMethod)
                     {
-                        fit(listCurrent, listForce, out string funcName, out double slope, out double intercept, out double variance);
+                        fit(listCurrent, listForce, out ResultStruct result);
                         double[] arrCurrent = [listCurrent[0], listCurrent.Last()];
-                        double[] arrVisualForce = [listCurrent[0] * slope + intercept, listCurrent.Last() * slope + intercept];
+                        double[] arrVisualForce = [listCurrent[0] * result.Slope + result.Intercept, listCurrent.Last() * result.Slope + result.Intercept];
                         formsPlot1.Plot.Add.ScatterLine(arrCurrent, arrVisualForce);
-                        TbResultRefresh(true, funcName, slope, intercept, variance);
+                        TbResultRefresh(true, result);
                     }
                 }
                 else
                 {
                     foreach (var fit in FittingData.ListFittingMethod)
                     {
-                        fit(listTorque, listForce, out string funcName, out double slope, out double intercept, out double variance);
+                        fit(listTorque, listForce, out ResultStruct result);
                         double[] arrTorque = [listTorque[0], listTorque.Last()];
-                        double[] arrForce = [listTorque[0] * slope + intercept, listTorque.Last() * slope + intercept];
+                        double[] arrForce = [listTorque[0] * result.Slope + result.Intercept, listTorque.Last() * result.Slope + result.Intercept];
                         formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
-                        TbResultRefresh(false, funcName, slope, intercept, variance);
-                        Slt_MethodChange.Items.Add(funcName + ':' + DtResult.Rows.Count);
+                        TbResultRefresh(false,result);
+                        Slt_MethodChange.Items.Add(result.FuncName + ':' + DtResult.Rows.Count);
                     }
                 }
             }
@@ -266,25 +303,33 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             formsPlot1.Refresh();
         }
 
-        private void TbResultRefresh(bool isCurrent, string fitName, double slope, double intercept, double variance)
+        /// <summary>
+        /// "计算结果"表格显示刷新
+        /// </summary>
+        /// <param name="isCurrent"></param>
+        /// <param name="fitName"></param>
+        /// <param name="slope"></param>
+        /// <param name="intercept"></param>
+        /// <param name="variance"></param>
+        private void TbResultRefresh(bool isCurrent, ResultStruct result)
         {
             string equation;
-            if (isCurrent) equation = "VisualForce = " + slope.ToString() + " * Current + " + intercept.ToString();
-            else equation = "Force = " + slope.ToString() + " * Torque + " + intercept.ToString();
+            if (isCurrent) equation = $"VisualForce = {result.Slope} * Current + {result.Intercept}";
+            else equation = $"Force = {result.Slope} * Torque + {result.Intercept}";
 
             string[] res =
             [
-                fitName,
+                result.FuncName,
                 equation,
-                slope.ToString(),
-                intercept.ToString(),
-                variance.ToString(),
+                result.Slope.ToString(),
+                result.Intercept.ToString(),
+                result.Variance.ToString(),
             ];
             DtResult.Rows.Add(res);
 
             Tb_Result.DataSource = DtResult;
-
         }
+        #endregion
 
         /// <summary>
         /// 文件校验
@@ -296,24 +341,6 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         {
             //TODO 未实现
             return true;
-        }
-
-        /// <summary>
-        /// 对数据升序排序并更新序号
-        /// 排序项：力矩显示升序
-        /// </summary>
-        private void DtCailbrationSort()
-        {
-            //根据力矩控制列进行排序
-            DtCailbration.DefaultView.Sort = "力矩限制 ASC";
-            DtCailbration = DtCailbration.DefaultView.ToTable();
-            //更新序号
-            for (int i = 0; i < DtCailbration.Rows.Count; i++)
-            {
-                DtCailbration.Rows[i][0] = i + 1;
-            }
-
-            Tb_DataInput.DataSource = DtCailbration;
         }
 
         /// <summary>
@@ -345,7 +372,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 switch (e.Text)
                 {
                     case "刷新":
-                        DtCailbrationSort();
+                        TbCailbrationRefresh();
                         break;
                     case "增加":
                         //向末尾增加一行数据，补充默认值
@@ -373,7 +400,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         break;
 
                     case "保存":
-                        DtCailbrationSort();
+                        TbCailbrationRefresh();
                         //数据校验完毕后保存数据
                         if (DataCheckout(DtCailbration))
                         {
@@ -384,7 +411,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                         }
                         break;
                     case "拟合":
-                        DtCailbrationSort();
+                        TbCailbrationRefresh();
                         if (DataCheckout(DtCailbration))
                             ChartRefresh(true, _EnableCailCurrent);
                         break;
@@ -396,6 +423,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }, menuStripItems);
         }
 
+        #region 数据校验窗口逻辑
         private void Lb_TarForce1_TextChanged(object sender, EventArgs e)
         {
             //TODO-JUST 反向换算是不是应该放到FittingData类？
@@ -424,5 +452,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         {
             Lb_TarForce1_TextChanged(Lb_TarForce1, e);
         }
+
+        #endregion
     }
 }

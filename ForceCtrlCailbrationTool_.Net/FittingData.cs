@@ -18,12 +18,16 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <param name="slope">斜率（K值）</param>
         /// <param name="intercept">截距（B值）</param>
         /// <param name="variance">方差</param>
-        public static void FittingData_Method_1(List<double> independent, List<double> dependent, out string funcName, out double slope, out double intercept, out double variance)
+        public static void FittingData_Method_1(List<double> independent, List<double> dependent, out ResultStruct result)
         {
-            funcName = "最小二乘法";
-            intercept = 0.0;
-            slope = 0.0;
-            variance = 0.0;
+            result = new ResultStruct()
+            {
+                FuncName = "最小二乘法",
+                Slope = 0,
+                Intercept = 0,
+                Variance = 0,
+            };
+
             if (independent.Count != dependent.Count || independent.Count < 2)
                 return;
 
@@ -36,8 +40,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 sum_SqInde += independent[i] * independent[i];
             }
 
-            slope = Math.Round((independent.Count * sum_IndeMulDe - sumInde * sumDe) / (independent.Count * sum_SqInde - sumInde * sumInde), 5);
-            intercept = Math.Round((sumDe - slope * sumInde) / independent.Count, 5);
+            result.Slope = Math.Round((independent.Count * sum_IndeMulDe - sumInde * sumDe) / (independent.Count * sum_SqInde - sumInde * sumInde), 5);
+            result.Intercept = Math.Round((sumDe - result.Slope * sumInde) / independent.Count, 5);
 
             return;
         }
@@ -51,18 +55,21 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <param name="slope">斜率（K值）</param>
         /// <param name="intercept">截距（B值）</param>
         /// <param name="variance">方差</param>
-        public static void FittingData_Method_2(List<double> independent, List<double> dependent, out string funcName, out double slope, out double intercept, out double variance)
+        public static void FittingData_Method_2(List<double> independent, List<double> dependent, out ResultStruct result)
         {
-            funcName = "一元一次方程";
-            intercept = 0.0;
-            slope = 0.0;
-            variance = 0.0;
+            result = new ResultStruct()
+            {
+                FuncName = "一元一次方程",
+                Slope = 0,
+                Intercept = 0,
+                Variance = 0,
+            };
 
             if (independent.Count != dependent.Count || independent.Count < 2)
                 return;
 
-            slope = Math.Round((dependent.Last() - dependent[0]) / (independent.Last() - independent[0]), 5);
-            intercept = Math.Round(dependent[0] - independent[0] * slope, 3);
+            result.Slope = Math.Round((dependent.Last() - dependent[0]) / (independent.Last() - independent[0]), 5);
+            result.Intercept = Math.Round(dependent[0] - independent[0] * result.Slope, 3);
 
             return;
         }
@@ -76,12 +83,15 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <param name="slope">斜率（K值）</param>
         /// <param name="intercept">截距（B值）</param>
         /// <param name="variance">方差</param>
-        public static void FittingData_Method_3(List<double> independent, List<double> dependent, out string funcName, out double slope, out double intercept, out double variance)
+        public static void FittingData_Method_3(List<double> independent, List<double> dependent, out ResultStruct result)
         {
-            funcName = "AI生成";
-            intercept = 0.0;
-            slope = 0.0;
-            variance = 0.0;
+            result = new ResultStruct()
+            {
+                FuncName = "AI算法",
+                Slope = 0,
+                Intercept = 0,
+                Variance = 0,
+            };
 
             if (independent.Count != dependent.Count || independent.Count < 2)
                 return;
@@ -94,8 +104,8 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                 molecule += (independent[i] - averIndependent) * (dependent[i] - averDependent);
                 denominator += (independent[i] - averIndependent) * (independent[i] - averIndependent);
             }
-            slope = Math.Round(molecule / denominator, 5);
-            intercept = Math.Round(averDependent - averIndependent * slope, 5);
+            result.Slope = Math.Round(molecule / denominator, 5);
+            result.Intercept = Math.Round(averDependent - averIndependent * result.Slope, 5);
             return;
         }
 
@@ -109,11 +119,33 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <param name="slope">斜率（K值）</param>
         /// <param name="intercept">截距（B值）</param>
         /// <param name="variance">方差</param>
-        public delegate void DelegateFittingMethod(List<double> independent, List<double> dependent, out string funcName, out double slope, out double intercept, out double variance);
+        public delegate void DelegateFittingMethod(List<double> independent, List<double> dependent, out ResultStruct result);
 
         /// <summary>
         /// 现有拟合方法的集合
         /// </summary>
         public static readonly List<DelegateFittingMethod> ListFittingMethod = [FittingData_Method_1, FittingData_Method_2, FittingData_Method_3];
+    }
+    public struct ResultStruct
+    {
+        /// <summary>
+        /// 调用算法名称
+        /// </summary>
+        public string FuncName {  get; set; }
+
+        /// <summary>
+        /// 斜率（K）
+        /// </summary>
+        public double Slope {  get; set; }
+
+        /// <summary>
+        /// 截距（B)
+        /// </summary>
+        public double Intercept { get; set; }
+
+        /// <summary>
+        /// 方差（可信度）
+        /// </summary>
+        public double Variance { get; set; }
     }
 }
