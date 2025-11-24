@@ -44,6 +44,16 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         private DataTable DtCailbration;
 
         /// <summary>
+        /// 拟合结果--力矩限制与实际压力
+        /// </summary>
+        private List<ResultStruct> ResultOfTorque;
+
+        /// <summary>
+        /// 拟合结果--电流反馈与实际压力
+        /// </summary>
+        private List<ResultStruct> ResultOfCurrent;
+
+        /// <summary>
         /// 拟合结果存放表单
         /// </summary>
         private DataTable DtResult;
@@ -52,8 +62,6 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// config文件读取储存
         /// </summary>
         private UserDataType.ConfigStruct CfgBackup;
-
-        private Dictionary<string, Scatter> Scatters;
 
         /// <summary>
         /// 初始加载界面时对显示做初值
@@ -84,16 +92,6 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             }
             Tb_DataInput.DataSource = DtCailbration;
 
-            ////数据图表初始化
-            //var points = formsPlot1.Plot.Add.ScatterPoints(new double[] { 0 }, new double[] { 0 });
-            //points.Color = ScottPlot.Color.FromColor(Color.Red);
-            //points.MarkerShape = ScottPlot.MarkerShape.FilledSquare;
-
-            //var line1 = formsPlot1.Plot.Add.ScatterLine(new double[] { 0 }, new double[] { 0 });
-            //line1.Color = ScottPlot.Color.FromColor(Color.Black);
-            //line1.LegendText=
-            //Scatters.Add("Points", points);
-
             //拟合结果表格-数值刷新
             //存入表格，显示控制
             DtResult = new();
@@ -110,9 +108,23 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             //--实际压力单位为用户单位
             Lb_TarForce1.SuffixText = CfgBackup.ForceUnit;
             //--应设力矩限制的地址：根据驱动器类型确认
-            Lb_TarTorque1.PrefixText = UserDataType.TorqueSettingAdr(Enum.Parse<UserDataType.DriveType>(CfgBackup.DriveType ?? "SAC_NP2_轴一"));
+            Lb_Torque1.PrefixText = UserDataType.TorqueSettingAdr(Enum.Parse<UserDataType.DriveType>(CfgBackup.DriveType ?? "SAC_NP2_轴一"));
             //--应设力矩限制的单位
-            Lb_TarTorque1.SuffixText = CfgBackup.TorqueUnit;
+            Lb_Torque1.SuffixText = CfgBackup.TorqueUnit;
+
+            //-力控限制对应理论输出压力
+            //--
+            Lb_TarTorque1.SuffixText=CfgBackup.TorqueUnit;
+            Lb_Force1.SuffixText=CfgBackup.ForceUnit;
+
+            //如果反馈当前电流为n-mA,计算理论压力n-unit
+            Lb_TarForce2.SuffixText=CfgBackup.ForceUnit;
+            Lb_Current1.SuffixText = CfgBackup.CurrentUnit;
+            Lb_Current1.PrefixText=UserDataType.CurrentReadAdr(Enum.Parse<UserDataType.DriveType>(CfgBackup.DriveType ?? "一体式电爪"));
+            Lb_TarCurrent1.SuffixText=CfgBackup.CurrentUnit;
+            Lb_Force2.SuffixText = CfgBackup.ForceUnit;
+
+            Pan_CurrentCheckout.Visible = _EnableCailCurrent;
         }
 
         #endregion
@@ -244,7 +256,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             Tb_DataInput.DataSource = DtCailbration;
 
             //刷新图表
-            ChartRefresh(true, _EnableCailCurrent);
+            ChartRefresh(true);
         }
 
         /// <summary>
@@ -357,6 +369,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
             if (refreshLine)
             {
                 DtResult.Rows.Clear();
+                ResultOfTorque = [];
                 Slt_MethodChange.Items.Clear();
                 foreach (var fit in FittingData.ListFittingMethod)
                 {
@@ -364,20 +377,22 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
                     double[] arrTorque = [listTorque[0], listTorque.Last()];
                     double[] arrForce = [listTorque[0] * result.Slope + result.Intercept, listTorque.Last() * result.Slope + result.Intercept];
                     formsPlot1.Plot.Add.ScatterLine(arrTorque, arrForce);
-                    TbResultRefresh(false, result);
-                    Slt_MethodChange.Items.Add(result.FuncName + ':' + DtResult.Rows.Count);
+                    ResultOfTorque.Add(result);
+                    Slt_MethodChange.Items.Add(result.FuncName);
                 }
-
+                TbResultRefresh(false);
                 if (_EnableCailCurrent)
                 {
+                    ResultOfCurrent = [];
                     foreach (var fit in FittingData.ListFittingMethod)
                     {
                         fit(listCurrent, listForce, out ResultStruct result);
                         double[] arrCurrent = [listCurrent[0], listCurrent.Last()];
                         double[] arrVisualForce = [listCurrent[0] * result.Slope + result.Intercept, listCurrent.Last() * result.Slope + result.Intercept];
                         formsPlot1.Plot.Add.ScatterLine(arrCurrent, arrVisualForce);
-                        TbResultRefresh(true, result);
+                        ResultOfCurrent.Add(result);
                     }
+                    TbResultRefresh(true);
                 }
 
                 Pan_DataCheckout.Enabled = true;
@@ -396,22 +411,41 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// <param name="slope"></param>
         /// <param name="intercept"></param>
         /// <param name="variance"></param>
-        private void TbResultRefresh(bool isCurrent, ResultStruct result)
+        private void TbResultRefresh(bool isCurrent)
         {
             string equation;
-            if (isCurrent) equation = $"VisualForce = {result.Slope} * Current + {result.Intercept}";
-            else equation = $"Force = {result.Slope} * Torque + {result.Intercept}";
-
-            string[] res =
-            [
-                result.FuncName,
-                equation,
-                result.Slope.ToString(),
-                result.Intercept.ToString(),
-                result.Variance.ToString(),
-            ];
-            DtResult.Rows.Add(res);
-
+            string[] res;
+            if (!isCurrent)
+            {
+                foreach (var result in ResultOfTorque)
+                {
+                    equation = $"Force = {result.Slope} * Torque + {result.Intercept}";
+                    res = [
+                        result.FuncName,
+                        equation,
+                        result.Slope.ToString(),
+                        result.Intercept.ToString(),
+                        result.Variance.ToString(),
+                    ];
+                    DtResult.Rows.Add(res);
+                }
+            }
+            else
+            {
+                foreach (var result in ResultOfCurrent)
+                {
+                    equation = $"VisualForce = {result.Slope} * Current + {result.Intercept}";
+                    res =
+                    [
+                        result.FuncName,
+                        equation,
+                        result.Slope.ToString(),
+                        result.Intercept.ToString(),
+                        result.Variance.ToString(),
+                    ];
+                    DtResult.Rows.Add(res);
+                }
+            }
             Tb_Result.DataSource = DtResult;
         }
         #endregion
@@ -470,30 +504,47 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         #region 数据校验窗口逻辑
         private void Lb_TarForce1_TextChanged(object sender, EventArgs e)
         {
-            if (Slt_MethodChange.SelectedValue == null)
+            if (Slt_MethodChange.SelectedIndex < 0)
                 return;
             try
             {
-                string select = (string)Slt_MethodChange.SelectedValue;
-                DataRow rows = DtResult.Rows[Convert.ToInt32(select[(select.IndexOf(':') + 1)..]) - 1];
-                double tarForce = Convert.ToDouble(Lb_TarForce1.Text);
-                Lb_TarTorque1.Text = Math.Round((tarForce - (double)rows["截距"]) / (double)rows["斜率"], 4).ToString();
+                var lb = sender as AntdUI.Input;
+                var tar = Convert.ToDouble(lb.Text);
+                switch (lb.Name)
+                {
+                    case "Lb_TarForce1":
+                        Lb_Torque1.Text = FittingData.GetTorque(tar, ResultOfTorque[Slt_MethodChange.SelectedIndex]).ToString();
+                        break;
+                    case "Lb_TarTorque1":
+                        Lb_Force1.Text = FittingData.GetForceWithTorque(tar, ResultOfTorque[Slt_MethodChange.SelectedIndex]).ToString();
+                        break;
+                    case "Lb_TarForce2":
+                        Lb_Current1.Text = FittingData.GetCurrent(tar, ResultOfTorque[Slt_MethodChange.SelectedIndex]).ToString();
+                        break;
+                    case "Lb_TarCurrent1":
+                        Lb_Force2.Text = FittingData.GetForceWithCurrent(tar, ResultOfTorque[Slt_MethodChange.SelectedIndex]).ToString();
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception)
             {
-
-                Lb_TarTorque1.Text = "无结果";
+                //Lb_Torque1.Text = "无结果";
             }
         }
 
         private void Slt_MethodChange_SelectedIndexChanged(object sender, IntEventArgs e)
         {
             Lb_TarForce1_TextChanged(Lb_TarForce1, e);
+            Lb_TarForce1_TextChanged(Lb_TarForce2, e);
+            Lb_TarForce1_TextChanged(Lb_TarTorque1, e);
+            Lb_TarForce1_TextChanged(Lb_TarCurrent1, e);
         }
 
         private void Pan_DataCheckout_EnabledChanged(object sender, EventArgs e)
         {
-            Lb_TarForce1_TextChanged(Lb_TarForce1, e);
+            Pan_CurrentCheckout.Visible = _EnableCailCurrent;
         }
 
         #endregion

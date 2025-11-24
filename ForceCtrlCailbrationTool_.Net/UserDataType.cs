@@ -80,6 +80,26 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         }
 
         /// <summary>
+        /// 根据驱动器类型确认电流反馈读取地址
+        /// </summary>
+        /// <param name="driveType">驱动器类型枚举</param>
+        /// <returns>地址（字符串类型，16进制）</returns>
+        public static string CurrentReadAdr(DriveType driveType)
+        {
+            return (int)driveType switch
+            {
+                0 => "0x6077",
+                1 => "0x6077",
+                2 => "0x6877",
+                3 => "0x7077",
+                4 => "0x7877",
+                5 => "0x204",
+                6 => "0x160D",
+                _ => "Error",
+            };
+        }
+
+        /// <summary>
         /// 基本设置配置
         /// </summary>
         public struct ConfigStruct

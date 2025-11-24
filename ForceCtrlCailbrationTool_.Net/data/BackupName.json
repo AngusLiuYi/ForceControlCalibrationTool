@@ -20,5 +20,16 @@
       "enableCailCurrent": "False",
       "currentUnit": "null"
     }
+  },
+  {
+    "fileName": "\u53D6\u65991\u7535\u722A",
+    "fileConfig": {
+      "driveType": "\u4E00\u4F53\u5F0F\u7535\u722A",
+      "servoType": "\u7535\u722A_PGEA",
+      "torqueUnit": "\u767E\u5206\u6BD4",
+      "forceUnit": "N",
+      "enableCailCurrent": "True",
+      "currentUnit": "mA"
+    }
   }
 ]

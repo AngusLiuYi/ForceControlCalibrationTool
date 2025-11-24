@@ -34,8 +34,21 @@
             Tb_DataInput = new AntdUI.Table();
             Tb_Result = new AntdUI.Table();
             Pan_DataCheckout = new AntdUI.Panel();
-            panel2 = new Panel();
+            Pan_CurrentCheckout = new Panel();
+            panel6 = new Panel();
+            Lb_Force2 = new AntdUI.Input();
+            label5 = new Label();
+            Lb_TarCurrent1 = new AntdUI.Input();
+            panel5 = new Panel();
+            Lb_Current1 = new AntdUI.Input();
+            label4 = new Label();
+            Lb_TarForce2 = new AntdUI.Input();
+            panel4 = new Panel();
+            Lb_Force1 = new AntdUI.Input();
+            label3 = new Label();
             Lb_TarTorque1 = new AntdUI.Input();
+            panel2 = new Panel();
+            Lb_Torque1 = new AntdUI.Input();
             label2 = new Label();
             Lb_TarForce1 = new AntdUI.Input();
             panel3 = new Panel();
@@ -44,6 +57,10 @@
             divider2 = new AntdUI.Divider();
             panel1.SuspendLayout();
             Pan_DataCheckout.SuspendLayout();
+            Pan_CurrentCheckout.SuspendLayout();
+            panel6.SuspendLayout();
+            panel5.SuspendLayout();
+            panel4.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             SuspendLayout();
@@ -124,6 +141,8 @@
             // Pan_DataCheckout
             // 
             Pan_DataCheckout.ArrowSize = 10;
+            Pan_DataCheckout.Controls.Add(Pan_CurrentCheckout);
+            Pan_DataCheckout.Controls.Add(panel4);
             Pan_DataCheckout.Controls.Add(panel2);
             Pan_DataCheckout.Controls.Add(panel3);
             Pan_DataCheckout.Controls.Add(divider2);
@@ -140,10 +159,193 @@
             Pan_DataCheckout.TabIndex = 26;
             Pan_DataCheckout.EnabledChanged += Pan_DataCheckout_EnabledChanged;
             // 
+            // Pan_CurrentCheckout
+            // 
+            Pan_CurrentCheckout.BackColor = Color.Transparent;
+            Pan_CurrentCheckout.Controls.Add(panel6);
+            Pan_CurrentCheckout.Controls.Add(panel5);
+            Pan_CurrentCheckout.Dock = DockStyle.Top;
+            Pan_CurrentCheckout.Location = new Point(30, 180);
+            Pan_CurrentCheckout.Name = "Pan_CurrentCheckout";
+            Pan_CurrentCheckout.Size = new Size(621, 115);
+            Pan_CurrentCheckout.TabIndex = 15;
+            Pan_CurrentCheckout.Visible = false;
+            // 
+            // panel6
+            // 
+            panel6.BackColor = Color.Transparent;
+            panel6.Controls.Add(Lb_Force2);
+            panel6.Controls.Add(label5);
+            panel6.Controls.Add(Lb_TarCurrent1);
+            panel6.Dock = DockStyle.Top;
+            panel6.Location = new Point(0, 49);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(621, 49);
+            panel6.TabIndex = 16;
+            // 
+            // Lb_Force2
+            // 
+            Lb_Force2.Dock = DockStyle.Fill;
+            Lb_Force2.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_Force2.JoinMode = AntdUI.TJoinMode.Right;
+            Lb_Force2.LocalizationPlaceholderText = "Input.{id}";
+            Lb_Force2.Location = new Point(476, 0);
+            Lb_Force2.Name = "Lb_Force2";
+            Lb_Force2.PlaceholderText = "无结果";
+            Lb_Force2.PrefixText = "";
+            Lb_Force2.ReadOnly = true;
+            Lb_Force2.Size = new Size(145, 49);
+            Lb_Force2.SuffixText = "Unit";
+            Lb_Force2.TabIndex = 13;
+            Lb_Force2.TextAlign = HorizontalAlignment.Center;
+            // 
+            // label5
+            // 
+            label5.BackColor = Color.Transparent;
+            label5.Dock = DockStyle.Left;
+            label5.Font = new Font("Microsoft YaHei UI", 10F);
+            label5.Location = new Point(269, 0);
+            label5.Margin = new Padding(4, 3, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(207, 49);
+            label5.TabIndex = 12;
+            label5.Text = "则理论输出压力";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // Lb_TarCurrent1
+            // 
+            Lb_TarCurrent1.Dock = DockStyle.Left;
+            Lb_TarCurrent1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_TarCurrent1.JoinMode = AntdUI.TJoinMode.Left;
+            Lb_TarCurrent1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_TarCurrent1.Location = new Point(0, 0);
+            Lb_TarCurrent1.Name = "Lb_TarCurrent1";
+            Lb_TarCurrent1.PlaceholderText = "500";
+            Lb_TarCurrent1.PrefixText = "如电流反馈";
+            Lb_TarCurrent1.Size = new Size(269, 49);
+            Lb_TarCurrent1.SuffixText = "mA";
+            Lb_TarCurrent1.TabIndex = 11;
+            Lb_TarCurrent1.TextAlign = HorizontalAlignment.Center;
+            Lb_TarCurrent1.TextChanged += Lb_TarForce1_TextChanged;
+            // 
+            // panel5
+            // 
+            panel5.BackColor = Color.Transparent;
+            panel5.Controls.Add(Lb_Current1);
+            panel5.Controls.Add(label4);
+            panel5.Controls.Add(Lb_TarForce2);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(621, 49);
+            panel5.TabIndex = 15;
+            // 
+            // Lb_Current1
+            // 
+            Lb_Current1.Dock = DockStyle.Fill;
+            Lb_Current1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_Current1.JoinMode = AntdUI.TJoinMode.Right;
+            Lb_Current1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_Current1.Location = new Point(380, 0);
+            Lb_Current1.Name = "Lb_Current1";
+            Lb_Current1.PlaceholderText = "无结果";
+            Lb_Current1.PrefixText = "0x000";
+            Lb_Current1.ReadOnly = true;
+            Lb_Current1.Size = new Size(241, 49);
+            Lb_Current1.SuffixText = "mA";
+            Lb_Current1.TabIndex = 13;
+            Lb_Current1.TextAlign = HorizontalAlignment.Center;
+            // 
+            // label4
+            // 
+            label4.BackColor = Color.Transparent;
+            label4.Dock = DockStyle.Left;
+            label4.Font = new Font("Microsoft YaHei UI", 10F);
+            label4.Location = new Point(196, 0);
+            label4.Margin = new Padding(4, 3, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(184, 49);
+            label4.TabIndex = 12;
+            label4.Text = "则电流稳态值";
+            label4.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // Lb_TarForce2
+            // 
+            Lb_TarForce2.Dock = DockStyle.Left;
+            Lb_TarForce2.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_TarForce2.JoinMode = AntdUI.TJoinMode.Left;
+            Lb_TarForce2.LocalizationPlaceholderText = "Input.{id}";
+            Lb_TarForce2.Location = new Point(0, 0);
+            Lb_TarForce2.Name = "Lb_TarForce2";
+            Lb_TarForce2.PlaceholderText = "500";
+            Lb_TarForce2.PrefixText = "目标压力";
+            Lb_TarForce2.Size = new Size(196, 49);
+            Lb_TarForce2.SuffixText = "Unit";
+            Lb_TarForce2.TabIndex = 11;
+            Lb_TarForce2.TextAlign = HorizontalAlignment.Center;
+            Lb_TarForce2.TextChanged += Lb_TarForce1_TextChanged;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.Transparent;
+            panel4.Controls.Add(Lb_Force1);
+            panel4.Controls.Add(label3);
+            panel4.Controls.Add(Lb_TarTorque1);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(30, 131);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(621, 49);
+            panel4.TabIndex = 14;
+            // 
+            // Lb_Force1
+            // 
+            Lb_Force1.Dock = DockStyle.Fill;
+            Lb_Force1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_Force1.JoinMode = AntdUI.TJoinMode.Right;
+            Lb_Force1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_Force1.Location = new Point(476, 0);
+            Lb_Force1.Name = "Lb_Force1";
+            Lb_Force1.PlaceholderText = "无结果";
+            Lb_Force1.PrefixText = "";
+            Lb_Force1.ReadOnly = true;
+            Lb_Force1.Size = new Size(145, 49);
+            Lb_Force1.SuffixText = "Unit";
+            Lb_Force1.TabIndex = 13;
+            Lb_Force1.TextAlign = HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            label3.BackColor = Color.Transparent;
+            label3.Dock = DockStyle.Left;
+            label3.Font = new Font("Microsoft YaHei UI", 10F);
+            label3.Location = new Point(269, 0);
+            label3.Margin = new Padding(4, 3, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(207, 49);
+            label3.TabIndex = 12;
+            label3.Text = "则理论输出压力";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // Lb_TarTorque1
+            // 
+            Lb_TarTorque1.Dock = DockStyle.Left;
+            Lb_TarTorque1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_TarTorque1.JoinMode = AntdUI.TJoinMode.Left;
+            Lb_TarTorque1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_TarTorque1.Location = new Point(0, 0);
+            Lb_TarTorque1.Name = "Lb_TarTorque1";
+            Lb_TarTorque1.PlaceholderText = "500";
+            Lb_TarTorque1.PrefixText = "如设力矩限制";
+            Lb_TarTorque1.Size = new Size(269, 49);
+            Lb_TarTorque1.SuffixText = "‰";
+            Lb_TarTorque1.TabIndex = 11;
+            Lb_TarTorque1.TextAlign = HorizontalAlignment.Center;
+            Lb_TarTorque1.TextChanged += Lb_TarForce1_TextChanged;
+            // 
             // panel2
             // 
             panel2.BackColor = Color.Transparent;
-            panel2.Controls.Add(Lb_TarTorque1);
+            panel2.Controls.Add(Lb_Torque1);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(Lb_TarForce1);
             panel2.Dock = DockStyle.Top;
@@ -152,21 +354,21 @@
             panel2.Size = new Size(621, 49);
             panel2.TabIndex = 13;
             // 
-            // Lb_TarTorque1
+            // Lb_Torque1
             // 
-            Lb_TarTorque1.Dock = DockStyle.Fill;
-            Lb_TarTorque1.Font = new Font("Microsoft YaHei UI", 10F);
-            Lb_TarTorque1.JoinMode = AntdUI.TJoinMode.Right;
-            Lb_TarTorque1.LocalizationPlaceholderText = "Input.{id}";
-            Lb_TarTorque1.Location = new Point(403, 0);
-            Lb_TarTorque1.Name = "Lb_TarTorque1";
-            Lb_TarTorque1.PlaceholderText = "无结果";
-            Lb_TarTorque1.PrefixText = "0x0000";
-            Lb_TarTorque1.ReadOnly = true;
-            Lb_TarTorque1.Size = new Size(218, 49);
-            Lb_TarTorque1.SuffixText = "‰";
-            Lb_TarTorque1.TabIndex = 13;
-            Lb_TarTorque1.TextAlign = HorizontalAlignment.Center;
+            Lb_Torque1.Dock = DockStyle.Fill;
+            Lb_Torque1.Font = new Font("Microsoft YaHei UI", 10F);
+            Lb_Torque1.JoinMode = AntdUI.TJoinMode.Right;
+            Lb_Torque1.LocalizationPlaceholderText = "Input.{id}";
+            Lb_Torque1.Location = new Point(380, 0);
+            Lb_Torque1.Name = "Lb_Torque1";
+            Lb_Torque1.PlaceholderText = "无结果";
+            Lb_Torque1.PrefixText = "0x0000";
+            Lb_Torque1.ReadOnly = true;
+            Lb_Torque1.Size = new Size(241, 49);
+            Lb_Torque1.SuffixText = "‰";
+            Lb_Torque1.TabIndex = 13;
+            Lb_Torque1.TextAlign = HorizontalAlignment.Center;
             // 
             // label2
             // 
@@ -176,9 +378,9 @@
             label2.Location = new Point(196, 0);
             label2.Margin = new Padding(4, 3, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(207, 49);
+            label2.Size = new Size(184, 49);
             label2.TabIndex = 12;
-            label2.Text = "则需要设置力控限制地址";
+            label2.Text = "则设置力控限制地址";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Lb_TarForce1
@@ -190,7 +392,7 @@
             Lb_TarForce1.Location = new Point(0, 0);
             Lb_TarForce1.Name = "Lb_TarForce1";
             Lb_TarForce1.PlaceholderText = "500";
-            Lb_TarForce1.PrefixText = "如果想要";
+            Lb_TarForce1.PrefixText = "目标压力";
             Lb_TarForce1.Size = new Size(196, 49);
             Lb_TarForce1.SuffixText = "Unit";
             Lb_TarForce1.TabIndex = 11;
@@ -263,6 +465,10 @@
             Shown += Frm_Basic_Shown;
             panel1.ResumeLayout(false);
             Pan_DataCheckout.ResumeLayout(false);
+            Pan_CurrentCheckout.ResumeLayout(false);
+            panel6.ResumeLayout(false);
+            panel5.ResumeLayout(false);
+            panel4.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ResumeLayout(false);
@@ -279,10 +485,23 @@
         private AntdUI.Divider divider2;
         private Label label1;
         private Panel panel2;
-        private AntdUI.Input Lb_TarTorque1;
+        private AntdUI.Input Lb_Torque1;
         private Label label2;
         private AntdUI.Input Lb_TarForce1;
         private Panel panel3;
         private AntdUI.Select Slt_MethodChange;
+        private Panel panel4;
+        private AntdUI.Input Lb_Force1;
+        private Label label3;
+        private AntdUI.Input Lb_TarTorque1;
+        private Panel Pan_CurrentCheckout;
+        private Panel panel6;
+        private AntdUI.Input Lb_Force2;
+        private Label label5;
+        private AntdUI.Input Lb_TarCurrent1;
+        private Panel panel5;
+        private AntdUI.Input Lb_Current1;
+        private Label label4;
+        private AntdUI.Input Lb_TarForce2;
     }
 }
