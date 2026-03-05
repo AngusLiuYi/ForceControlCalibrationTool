@@ -17,6 +17,7 @@ namespace ForceCtrlCailbrationTool_.Net_x._0_
         /// </summary>
         public int IsStartGuide = 0;
 
+
         private void Btn_StartGuide_Click(object sender, EventArgs e)
         {
             //TODO--引导实现
